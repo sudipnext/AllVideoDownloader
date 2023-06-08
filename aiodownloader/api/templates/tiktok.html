@@ -1,4 +1,5 @@
 {% extends 'index.html' %} {% block result %}
+
 <div id="result_section" class="result_section">
   <h1 class="video_title">Video title will be here.</h1>
   <div class="video_content">
@@ -18,42 +19,53 @@
   </div>
   {% endblock result %} {% block script %}
   <script>
-    const title = document.querySelector(".video_title");
-    const search_btn = document.getElementById("download-btn");
-    const video_url = document.getElementById("video-url");
-    const result_section = document.getElementById("result_section");
-    
+    const title = document.querySelector( ".video_title" );
+    const search_btn = document.getElementById( "download-btn" );
+    const video_url = document.getElementById( "video-url" );
+    const result_section = document.getElementById( "result_section" );
+    const loader = document.querySelector( "#loading" );
+    const overlay = document.querySelector( "#overlay" );
+
     let download_url;
-    search_btn.addEventListener("click", () => getDownloadUrl());
-    async function getDownloadUrl() {
+    search_btn.addEventListener( "click", () => getDownloadUrl() );
+    async function getDownloadUrl ()
+    {
       if (
         video_url.value.match(
           /^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/
         )
-      ) {
+      )
+      {
+        overlay.classList.add( 'show_ovelay' );
+        loader.classList.add( "display" );
         const payload = {
           video_url: video_url.value,
         };
         url = "http://127.0.0.1:8000/tiktok/";
-        const response = await fetch(url, {
+        const response = await fetch( url, {
           method: "POST",
-          body: JSON.stringify(payload),
+          body: JSON.stringify( payload ),
           headers: {
             "Content-Type": "application/json",
           },
-        });
+        } );
         const data = await response.json();
-        console.log(response.status);
-        if (response.status === 200) {
+        console.log( response.status );
+        if ( response.status === 200 )
+        {
+          overlay.classList.remove( 'show_ovelay' );
+          loader.classList.remove( "display" );
           result_section.style.display = "block";
           title.innerText = data.description
           download_url = data.download_url;
         }
-      } else {
-        console.log("correct your url");
+      } else
+      {
+        console.log( "correct your url" );
       }
     }
-    function downloadVideo() {
+    function downloadVideo ()
+    {
       location.href = download_url;
     }
   </script>

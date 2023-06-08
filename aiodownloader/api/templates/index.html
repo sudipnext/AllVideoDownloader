@@ -27,7 +27,57 @@
         </ul>
       </nav>
     </header>
-    <main>
+    <style>
+      /* loading animation */
+      #loading {
+        position: fixed;
+        z-index: 100;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 5rem;
+        height: 5rem;
+        border: 8px solid #f3f3f3;
+        border-top: 6px solid #9c41f2;
+        border-radius: 100%;
+        margin: auto;
+        display: none;
+        animation: spin 1s infinite linear;
+      }
+
+      #loading.display {
+        display: block;
+      }
+
+      #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 90;
+        background-color: #000000;
+        opacity: 0.3;
+      }
+
+      #overlay.show_ovelay {
+        display: block;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <main style="position: relative;">
+      <div id="loading"></div>
+      <div id="overlay"></div>
       <div class="intro-text">
         <h2>Welcome to Video Downloader</h2>
         <p>Download videos from various platforms in MP3 or MP4 format.</p>
