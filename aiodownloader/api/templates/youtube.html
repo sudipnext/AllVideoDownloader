@@ -1,31 +1,106 @@
-{% extends 'index.html' %} {% block select %}
-<div class="format-select">
-  <label for="video-format">Select Format:</label>
-  <div class="select">
-    <select name="format" class="formte" id="format">
-      <option value="mp3">Mp3</option>
-      <option value="mp4a">144 Mp4</option>
-      <option value="360">360 Mp4</option>
-      <option value="480">480 Mp4</option>
-      <option value="720">720 Mp4</option>
-      <option value="1080">1080 Mp4</option>
-      <option value="4k">4k Mp4</option>
-      <option value="8k">8k Mp4</option>
-    </select>
+{% extends 'index.html' %} {% block result %}
+<div id="result_section" class="result_section">
+  <h1 class="video_title">Video title will be here.</h1>
+  <div class="video_content">
+    <div class="video_img">
+      <img src="" alt="" width="100%" height="100%" />
+    </div>
+    <!-- resolution -->
+    <div class="resolution_section" id="resolution_section">
+      <h3>Resolution</h3>
+    </div>
+    <!-- download button -->
+    <div class="download_section">
+      <h3>Download</h3>
+      <button onclick="downloadVideo()" class="download_btn">Download</button>
+    </div>
   </div>
-</div>
-{% endblock select %} 
-{% block script %}
-<script type="text/javascript">
-  $(".click-btn-down").click(function(){
-      var link = $(".link").val();
-    var fromate = $(".formte").children("option:selected").val();
-    var src =""+link+"="+fromate+"";
-    downloadVideo(link,fromate);
-  });
-  function downloadVideo(link,fromate) {
-      $('.download-video').html('<iframe style="width:100%;height:60px;border:0;overflow:hidden;" scrolling="no" src="https://loader.to/api/button/?url='+link+'&f='+fromate+'"></iframe>');
-  }
-</script>
+  {% endblock result %} {% block select %}
+  <div class="format-select">
+    <label for="video-format">Select Format:</label>
+    <div class="select">
+      <select name="format" class="formte" id="format">
+        <option value="mp3">Mp3</option>
+        {% comment %}
+        <option value="mp4a">144 Mp4</option>
+        <option value="360">360 Mp4</option>
+        <option value="480">480 Mp4</option>
+        <option value="720">720 Mp4</option>
+        <option value="1080">1080 Mp4</option>
+        <option value="4k">4k Mp4</option>
+        {% endcomment %}
+        <option value="mp4">Mp4</option>
+      </select>
+    </div>
+  </div>
+  {% endblock select %} {% block script %}
+  <script type="text/javascript">
+      const search_btn = document.getElementById("download-btn");
+      const video_url = document.getElementById("video-url");
+      const formatSelect = document.querySelector(".formte");
+      const title = document.querySelector(".video_title");
+      const imgDiv = document.querySelector(".video_img");
+      const imgElement = imgDiv.querySelector("img");
+      const resolution = document.querySelector("#resolution_section");
 
-{% endblock script %}
+      var selectedOption = formatSelect.options[formatSelect.selectedIndex];
+
+      search_btn.addEventListener("click", ()=>{
+        console.log(selectedOption.value)
+        if(selectedOption.value === 'mp4'){
+          url="http://127.0.0.1:8000/ytb/"
+          const payload = {
+            video_url: video_url.value
+          };
+          fetch(url, {
+            method: "POST",
+            body: JSON.stringify(payload),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+            .then(response => response.json())
+            .then(data => {
+              //console.log(data);
+              result_section.style.display = "block";
+              title.innerText = data.title
+              imgElement.src = data.thumbnails
+              let format = data.format
+              console.log(format)
+              let unique=[]
+              format.map(item=>{
+                if(!unique.includes(item.height)){
+                  if(item.height!=null || item.width!=null){
+                    unique.push(item.height)
+                    resolution.innerHTML+=`<p>${item.height} X ${item.width}</p>`
+                  }
+                }
+              })
+              
+
+
+            })
+            .catch(error => {
+              console.error("An error occurred:", error);
+            });
+
+
+        }
+      //  var link=video_url.value
+      //  var formate = selectedOption.value
+        //downloadVideo(link, formate)
+
+      })
+    {% comment %} $(".click-btn-down").click(function(){
+          var link = $(".link").val();
+        var fromate = $(".formte").children("option:selected").val();
+        var src =""+link+"="+fromate+"";
+        downloadVideo(link,fromate);
+      });  {% endcomment %}
+      {% comment %} function downloadVideo(link,fromate) {
+          $('.download-video').html('<iframe style="width:100%;height:60px;border:0;overflow:hidden;" scrolling="no" src="https://loader.to/api/button/?url='+link+'&f='+fromate+'"></iframe>');
+      } {% endcomment %}
+  </script>
+
+  {% endblock script %}
+</div>
