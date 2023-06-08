@@ -1,0 +1,31 @@
+{% extends 'index.html' %} {% block select %}
+<div class="format-select">
+  <label for="video-format">Select Format:</label>
+  <div class="select">
+    <select name="format" class="formte" id="format">
+      <option value="mp3">Mp3</option>
+      <option value="mp4a">144 Mp4</option>
+      <option value="360">360 Mp4</option>
+      <option value="480">480 Mp4</option>
+      <option value="720">720 Mp4</option>
+      <option value="1080">1080 Mp4</option>
+      <option value="4k">4k Mp4</option>
+      <option value="8k">8k Mp4</option>
+    </select>
+  </div>
+</div>
+{% endblock select %} 
+{% block script %}
+<script type="text/javascript">
+  $(".click-btn-down").click(function(){
+      var link = $(".link").val();
+    var fromate = $(".formte").children("option:selected").val();
+    var src =""+link+"="+fromate+"";
+    downloadVideo(link,fromate);
+  });
+  function downloadVideo(link,fromate) {
+      $('.download-video').html('<iframe style="width:100%;height:60px;border:0;overflow:hidden;" scrolling="no" src="https://loader.to/api/button/?url='+link+'&f='+fromate+'"></iframe>');
+  }
+</script>
+
+{% endblock script %}

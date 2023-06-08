@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+{% block result %}
+<div id="result_section" class="result_section">
+    <h1 class="video_title">Video title will be here.</h1>
+    <div class="video_content">
+      <div class="video_img">
+        <img src="" alt="">
+      </div>
+      <!-- resolution -->
+      <div class="resolution_section">
+        <h3>Resolution</h3>
+        <p>720</p>
+      </div>
+      <!-- download button -->
+      <div class="download_section">
+        <h3>Download</h3>
+        <button onclick="downloadVideo()" class="download_btn">Download</button>
+      </div>
+    </div>
+{% endblock result %}
+{% block script %}
+<script>
+  const search_btn = document.getElementById("download-btn");
+  const video_url = document.getElementById("video-url");
+  const result_section = document.getElementById("result_section");
+  let download_url;
+  search_btn.addEventListener("click", () => getDownloadUrl());
+  async function getDownloadUrl() {
+    if (
+      video_url.value.match(
+        /^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/
+      )
+    ) {
+      const response = await fetch(
+        `https://www.cloudconversion.online/ssstik/?video=${video_url.value}`
+      );
+      const data = await response.json();
+      console.log(response.status);
+      if (response.status === 200) {
+        result_section.style.display = "block";
+        download_url = data.download_url;
+      }
+    } else {
+      console.log("correct your url");
+    }
+  }
+  function downloadVideo() {
+    location.href = download_url;
+  }
+</script>
+
+{% endblock script %}

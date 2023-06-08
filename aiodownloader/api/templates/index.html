@@ -38,38 +38,20 @@
           <input type="text" id="video-url" placeholder="Enter video URL here.">
           <button id="download-btn">Search</button>
         </div>
-        <div class="format-select">
-          <label for="video-format">Select Format:</label>
 
-          <div class="select">
-            <select name="format" id="format">
-              <option value="mp4">Video-MP4</option>
-              <option value="mp3">Audio-MP3</option>
-            </select>
-          </div>
+        {% block select %}
+        
+        {% endblock select %}
 
-        </div>
+
+
       </div>
-      <div id="result_section" class="result_section">
-        <h1 class="video_title">Video title will be here.</h1>
-        <div class="video_content">
-          <div class="video_img">
-            <img src="" alt="">
-          </div>
-          <!-- resolution -->
-          <div class="resolution_section">
-            <h3>Resolution</h3>
-            <p>720</p>
-            <p>360</p>
-          </div>
-          <!-- download button -->
-          <div class="download_section">
-            <h3>Download</h3>
-            <button onclick="downloadVideo()" class="download_btn">Download</button>
-            <button class="download_btn">Download</button>
-          </div>
-        </div>
-
+      {% block result %}
+      
+      
+      {% endblock result %}
+      
+      
 
       </div>
 
@@ -177,53 +159,11 @@
     </footer>
   </div>
 
-  <script>
-    const search_btn = document.getElementById( 'download-btn' );
-    const video_url = document.getElementById( 'video-url' );
-    const result_section = document.getElementById( 'result_section' )
-    let download_url;
-    search_btn.addEventListener( 'click', () => getDownloadUrl() )
-    async function getDownloadUrl ()
-    {
-      if ( video_url.value.match( /^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/ ) )
-      {
-        const response = await fetch( `https://www.cloudconversion.online/ssstik/?video=${ video_url.value }` )
-        const data = await response.json();
-        console.log( response.status );
-        if ( response.status === 200 )
-        {
-          result_section.style.display = 'block';
-          download_url = data.download_url;
-        }
-      }
-      else
-      {
-        console.log( 'correct your url' );
-      }
+  {% block script %}
+  
+  {% endblock script %}
 
-
-      // const response = await fetch( 'http://127.0.0.1:8000/tiktok/', {
-      //   method: 'POST',
-      //   headers: {
-      //     "Content-Type": "application/json",
-
-      //   },
-
-      //   body: {
-      //     "video_url": "https://www.tiktok.com/@aanshvermaa_100/video/7240097181594701063/"
-      //   }
-      // } )
-      // const data = await response.json();
-      // console.log( data );
-
-
-    }
-    function downloadVideo ()
-    {
-      location.href = download_url;
-    }
-
-  </script>
+  
 </body>
 
 </html>
