@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <title>Name | Downloader</title>
+
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <h1>Logo</h1>
+        <!-- <img src="logo.png" alt="Video Downloader Logo"> -->
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/" class="active nav_link" onclick="chanageActiveLink(event)">YouTube Downloader</a></li>
+          <li><a href="/tik-tok" class="nav_link" onclick="chanageActiveLink(event)">TikTok Downloader</a></li>
+          <li><a href="/instagram" class="nav_link" onclick="chanageActiveLink(event)">Instagram Downloader</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="intro-text">
+        <h2>Welcome to Video Downloader</h2>
+        <p>Download videos from various platforms in MP3 or MP4 format.</p>
+      </div>
+      <div class="search-container">
+        <div class="search-box">
+
+          <input type="text" id="video-url" placeholder="Enter video URL here.">
+          <button id="download-btn">Search</button>
+        </div>
+        <div class="format-select">
+          <label for="video-format">Select Format:</label>
+
+          <div class="select">
+            <select name="format" id="format">
+              <option value="mp4">Video-MP4</option>
+              <option value="mp3">Audio-MP3</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+      <div id="result_section" class="result_section">
+        <h1 class="video_title">Video title will be here.</h1>
+        <div class="video_content">
+          <div class="video_img">
+            <img src="" alt="">
+          </div>
+          <!-- resolution -->
+          <div class="resolution_section">
+            <h3>Resolution</h3>
+            <p>720</p>
+            <p>360</p>
+          </div>
+          <!-- download button -->
+          <div class="download_section">
+            <h3>Download</h3>
+            <button onclick="downloadVideo()" class="download_btn">Download</button>
+            <button class="download_btn">Download</button>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="ads-section">
+
+        <div class="ads">
+          <div class="ad-item" style="background-color: #f1c40f;">
+            <p>ads</p>
+          </div>
+
+        </div>
+      </div>
+      <div class="how-to-section">
+        <h3>How to Download</h3>
+        <ul>
+          <li>
+            <p>Copy the <span class="highlight">Video URL</span> from YouTube or Tik-Tok or Instagram.</p>
+            <img class="how-to-img" src="{% static '/images/first.png' %}" alt="">
+          </li>
+          <li>
+            <p><span class="highlight">Paste the URL</span> in the search box above.</p>
+            <img class="how-to-img" src="{% static '/images/second.png' %}" alt="">
+          </li>
+          <li>
+            <p>Select the desired format <span class="highlight">(MP3 or MP4)</span> .</p>
+            <img class="how-to-img" src="{% static '/images/third.png' %}" alt="">
+          </li>
+          <li>
+            <p>Click the <span class="highlight">"Search"</span> button.</p>
+            <img class="how-to-img" src="{% static '/images/fourth.png' %}" alt="">
+          </li>
+          <li>
+            <p>Click <span class="highlight">" Download "</span> to
+              download
+              the video.
+              <span class="highlight">Done!</span>
+            </p>
+            <img class="how-to-img" src="{% static '/images/five.png' %}" alt="">
+          </li>
+
+        </ul>
+      </div>
+      <div class="download_container"><button class="download_btn">Download Now</button></div>
+
+      <div class="other_links">
+        <h3>Try These Downloader Also</h3>
+        <div class="link_containers">
+          <a href="/tik-tok.html">
+            <div class="link_container tiktok-img">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50"
+                width="50px" height="50px">
+                <g>
+                  <path style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"
+                    d="M9,45h32c2.211,0,4-1.789,4-4V9c0-2.211-1.789-4-4-4H9C6.789,5,5,6.789,5,9v32C5,43.211,6.789,45,9,45z" />
+                  <path
+                    style="fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
+                    d="M30.058,11h-4.016c0,0-0.042,19.498-0.042,19.594c0,2.404-2.123,4.298-4.527,4.298s-4.352-1.948-4.352-4.352s1.948-4.352,4.352-4.352c0.181,0,0.352,0.032,0.527,0.053v-4.202c-0.175-0.011-0.349-0.027-0.527-0.027c-4.709,0-8.527,3.818-8.527,8.527s3.818,8.527,8.527,8.527S30,35.249,30,30.54c0-0.102,0-6.188,0-11.537c1.341,2.04,3.646,3.388,6.269,3.388c0.233,0,0.462-0.014,0.69-0.035v-4.671C33.335,17.425,30.435,14.591,30.058,11z" />
+                </g>
+              </svg>
+              <p>Tik-tok Downloader</p>
+            </div>
+          </a>
+          <a href="/instagram.html">
+            <div class="link_container insta-img">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50"
+                width="50px" height="50px">
+                <path style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;"
+                  d="M16,46h18c6.627,0,12-5.373,12-12V16c0-6.627-5.373-12-12-12H16C9.373,4,4,9.373,4,16v18C4,40.627,9.373,46,16,46z" />
+                <circle style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;" cx="25" cy="25" r="10" />
+                <circle cx="37" cy="13" r="2" />
+              </svg>
+              <p>Instagram Downloader</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="share_container">
+        <div class="share_section">
+          <h3>Share to world</h3>
+          <p>Let other enjoy this downloader.</p>
+          <div class="share_links">
+            <svg class="share_link fb" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 50 50" width="50px" height="50px">
+              <path style="fill:none;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;"
+                d="M25,4C13.402,4,4,13.402,4,25c0,10.528,7.756,19.222,17.861,20.74V30.566h-5.196v-5.52h5.196v-3.673c0-6.081,2.963-8.751,8.017-8.751c2.421,0,3.701,0.179,4.307,0.261v4.818h-3.447c-2.145,0-2.895,2.034-2.895,4.327v3.017h6.289l-0.853,5.52h-5.435v15.22C38.093,44.395,46,35.631,46,25C46,13.402,36.598,4,25,4z" />
+            </svg>
+            <svg class="share_link twitter" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" width="50px" height="50px">
+              <path fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+                d="M49,11.096c-1.768,0.784-3.664,1.311-5.658,1.552c2.035-1.22,3.597-3.151,4.332-5.448c-1.903,1.127-4.013,1.947-6.255,2.388c-1.795-1.916-4.354-3.11-7.186-3.11c-5.44,0-9.849,4.409-9.849,9.847c0,0.771,0.088,1.522,0.257,2.244c-8.184-0.412-15.441-4.332-20.299-10.29c-0.848,1.458-1.332,3.149-1.332,4.953c0,3.416,1.735,6.429,4.38,8.197c-1.616-0.051-3.132-0.495-4.46-1.233c0,0.042,0,0.082,0,0.125c0,4.773,3.394,8.748,7.896,9.657c-0.824,0.227-1.694,0.346-2.592,0.346c-0.636,0-1.253-0.062-1.856-0.178c1.257,3.909,4.892,6.761,9.201,6.84c-3.368,2.641-7.614,4.213-12.23,4.213c-0.797,0-1.579-0.044-2.348-0.137c4.356,2.795,9.534,4.425,15.095,4.425c18.114,0,28.022-15.007,28.022-28.016c0-0.429-0.011-0.856-0.029-1.275C46.012,14.807,47.681,13.071,49,11.096z" />
+            </svg>
+            <svg class="share_link insta" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 50 50" width="50px" height="50px">
+              <path style="fill:none;stroke-width:2;stroke-miterlimit:10;"
+                d="M16,46h18c6.627,0,12-5.373,12-12V16c0-6.627-5.373-12-12-12H16C9.373,4,4,9.373,4,16v18C4,40.627,9.373,46,16,46z" />
+              <circle style="fill:none;stroke-width:2;stroke-miterlimit:10;" cx="25" cy="25" r="10" />
+              <circle cx="37" cy="13" r="2" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2023 Video Downloader. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const search_btn = document.getElementById( 'download-btn' );
+    const video_url = document.getElementById( 'video-url' );
+    const result_section = document.getElementById( 'result_section' )
+    let download_url;
+    search_btn.addEventListener( 'click', () => getDownloadUrl() )
+    async function getDownloadUrl ()
+    {
+      if ( video_url.value.match( /^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/ ) )
+      {
+        const response = await fetch( `https://www.cloudconversion.online/ssstik/?video=${ video_url.value }` )
+        const data = await response.json();
+        console.log( response.status );
+        if ( response.status === 200 )
+        {
+          result_section.style.display = 'block';
+          download_url = data.download_url;
+        }
+      }
+      else
+      {
+        console.log( 'correct your url' );
+      }
+
+
+      // const response = await fetch( 'http://127.0.0.1:8000/tiktok/', {
+      //   method: 'POST',
+      //   headers: {
+      //     "Content-Type": "application/json",
+
+      //   },
+
+      //   body: {
+      //     "video_url": "https://www.tiktok.com/@aanshvermaa_100/video/7240097181594701063/"
+      //   }
+      // } )
+      // const data = await response.json();
+      // console.log( data );
+
+
+    }
+    function downloadVideo ()
+    {
+      location.href = download_url;
+    }
+
+  </script>
+</body>
+
+</html>

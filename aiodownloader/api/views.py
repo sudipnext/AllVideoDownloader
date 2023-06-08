@@ -1,7 +1,14 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import HttpResponse
 from .serializers import TikTokSerializer
+from django.template import loader
 import requests
+
+
+def homePage(request):
+    template = loader.get_template('index.html')
+    return HttpResponse(template.render())
 
 class TiktokDownload(APIView):
     def post(self, request):
