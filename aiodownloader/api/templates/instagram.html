@@ -1,8 +1,59 @@
-{% extends 'index.html' %}
+{% extends 'index.html' %} {% block result %}
+<div id="result_section" class="result_section">
+  <h1 class="video_title">Video title will be here.</h1>
+  <div class="video_content">
+    <div class="video_img">
+      <img src="" alt="" />
+    </div>
+    <!-- resolution -->
+    <div class="resolution_section">
+      <h3>Resolution</h3>
+      <p>720</p>
+    </div>
+    <!-- download button -->
+    <div class="download_section">
+      <h3>Download</h3>
+      <button onclick="downloadVideo()" class="download_btn">Download</button>
+    </div>
+  </div>
+</div>
 
+{% endblock result %} {% block script %}
+<script type="text/javascript">
+  const search_btn = document.getElementById("download-btn");
+  const video_url = document.getElementById("video-url");
+  const title = document.querySelector(".video_title");
+  const imgDiv = document.querySelector(".video_img");
+  const imgElement = imgDiv.querySelector("img");
 
-{% block link %}
-<li><a href="/" class="nav_link" >YouTube Downloader</a></li>
+  search_btn.addEventListener("click", () => {
+    url = "http://127.0.0.1:8000/insta/";
+    const payload = {
+      video_url: video_url.value,
+    };
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        result_section.style.display = "block";
+        title.innerText = data.description;
+        download_url = data.download_url;
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      });
+  });
+  function downloadVideo() {
+    location.href = download_url;
+  }
+</script>
+{% endblock script %} {% block link %}
+<li><a href="/" class="nav_link">YouTube Downloader</a></li>
 <li><a href="/tik-tok" class="nav_link">TikTok Downloader</a></li>
 <li><a href="/instagram" class="active nav_link">Instagram Downloader</a></li>
 {% endblock link %}
