@@ -25,8 +25,12 @@
   const title = document.querySelector(".video_title");
   const imgDiv = document.querySelector(".video_img");
   const imgElement = imgDiv.querySelector("img");
+  const loader = document.querySelector( "#loading" );
+  const overlay = document.querySelector( "#overlay" );
 
   search_btn.addEventListener("click", () => {
+    overlay.classList.add( 'show_ovelay' );
+    loader.classList.add( "display" );
     url = "http://127.0.0.1:8000/insta/";
     const payload = {
       video_url: video_url.value,
@@ -40,6 +44,8 @@
     })
       .then((response) => response.json())
       .then((data) => {
+        overlay.classList.remove( 'show_ovelay' );
+        loader.classList.remove( "display" );
         result_section.style.display = "block";
         title.innerText = data.description;
         download_url = data.download_url;
