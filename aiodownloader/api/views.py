@@ -1,13 +1,16 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseNotFound
 from .serializers import *
 from django.template import loader
 import requests
 import instaloader
 import html
 import re
+import os
 from bs4 import BeautifulSoup
+from django.http import FileResponse
+from django.conf import settings
 
 
 def InstaGramView(request):
@@ -59,16 +62,29 @@ class InstaDownload(APIView):
         serializer = InstagramSerializer(data=request.data)
         if serializer.is_valid():
             video_url = serializer.validated_data['video_url']
-            InstaDownloader(video_url)
-            return Response({"tarun": "gill"}, 200)
+            res = InstaDownloader(video_url)
+            return Response(res, 200)
         
-
+#downloads the file
 def InstaDownloader(url):
     L = instaloader.Instaloader()
     shortcode = re.findall(r'/([A-Za-z0-9_-]+?)/?$', url)[0]
     post = instaloader.Post.from_shortcode(L.context, shortcode)
-    target = 'downloads/'
+    target = 'downloads'
     L.download_post(post, target=target)
+    description = post.caption.strip()
+    filenames = []
+    for filename in os.listdir(target):
+        if filename.startswith(post.date_utc.strftime('%Y-%m-%d')):
+            filenames.append(filename)
+    # Rename the files to the shortcode
+    for filename in filenames:
+        old_path = os.path.join(target, filename)
+        new_filename = f"{shortcode}{os.path.splitext(filename)[1]}"
+        new_path = os.path.join(target, new_filename)
+        os.rename(old_path, new_path)
+    download_url = f"http://localhost:8000/media/videos/{shortcode}/"
+    return {"description":description, "download_url": download_url}
 
 
 # tiktok_description_fetching for tiktok
@@ -90,3 +106,13 @@ def get_description(url):
         return matches.group(2)
     else:
         return "No matching meta tag found."
+#serving instagram videos
+def serve_video(request, video_code):
+    video_filename = f"{video_code}.mp4"
+    video_path = os.path.join(settings.BASE_DIR, 'downloads', video_filename)
+    if os.path.exists(video_path):
+        response = FileResponse(open(video_path, 'rb'), content_type='video/mp4')
+        response['Content-Disposition'] = f'attachment; filename="{video_filename}"'
+        return response
+    else:
+        return HttpResponseNotFound("File not found")
