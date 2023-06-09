@@ -3,16 +3,18 @@
   <h1 class="video_title">Video title will be here.</h1>
   <div class="video_content">
     <div class="video_img">
-      <img src="" alt="" width="100%" height="100%" />
+      <img src="" alt="" width="100%" />
     </div>
     <!-- resolution -->
     <div class="resolution_section" id="resolution_section">
       <h3>Resolution</h3>
     </div>
     <!-- download button -->
-    <div class="download_section">
+    <div class="download_section" id="download_section">
       <h3>Download</h3>
+      {% comment %}
       <button onclick="downloadVideo()" class="download_btn">Download</button>
+      {% endcomment %}
     </div>
   </div>
   {% endblock result %} {% block select %}
@@ -42,8 +44,9 @@
       const imgDiv = document.querySelector(".video_img");
       const imgElement = imgDiv.querySelector("img");
       const resolution = document.querySelector("#resolution_section");
+      const downloadSection = document.querySelector("#download_section");
 
-      var selectedOption = formatSelect.options[formatSelect.selectedIndex];
+      const selectedOption = formatSelect.options[formatSelect.selectedIndex];
 
       search_btn.addEventListener("click", ()=>{
         console.log(selectedOption.value)
@@ -63,20 +66,21 @@
             .then(data => {
               //console.log(data);
               result_section.style.display = "block";
-              title.innerText = data.title
-              imgElement.src = data.thumbnails
-              let format = data.format
-              console.log(format)
+              title.innerText = data.data.title
+              imgElement.src = data.data.thumbnail
+              let format = data.data.video_formats
               let unique=[]
+              console.log(format)
               format.map(item=>{
-                if(!unique.includes(item.height)){
-                  if(item.height!=null || item.width!=null){
-                    unique.push(item.height)
+                if(!unique.includes(item.url)){
+                  unique.push(item.url)
+                  if(item.url!=null){
                     resolution.innerHTML+=`<p>${item.height} X ${item.width}</p>`
+                    downloadSection.innerHTML+=`<a href="${item.url}&title=${data.data.title}" class="download_btn">Download</a>`
                   }
                 }
               })
-              
+
 
 
             })
