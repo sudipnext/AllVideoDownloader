@@ -10,7 +10,7 @@ import os
 from django.http import FileResponse
 from django.conf import settings
 
-
+#Static file views
 def InstaGramView(request):
     template = loader.get_template('instagram.html')
     return HttpResponse(template.render())
