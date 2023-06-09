@@ -10,8 +10,8 @@ import re
 from bs4 import BeautifulSoup
 
 
-def homePage(request):
-    template = loader.get_template('index.html')
+def InstaGramView(request):
+    template = loader.get_template('instagram.html')
     return HttpResponse(template.render())
 def YouTubeView(request):
     template = loader.get_template('youtube.html')

@@ -18,11 +18,11 @@
   </div>
   {% endblock result %} {% block script %}
   <script>
+    
     const title = document.querySelector(".video_title");
     const search_btn = document.getElementById("download-btn");
     const video_url = document.getElementById("video-url");
     const result_section = document.getElementById("result_section");
-    
     let download_url;
     search_btn.addEventListener("click", () => getDownloadUrl());
     async function getDownloadUrl() {
@@ -60,3 +60,9 @@
 
   {% endblock script %}
 </div>
+
+{% block link %}
+<li><a href="/" class="nav_link" >YouTube Downloader</a></li>
+<li><a href="/tik-tok" class="active nav_link">TikTok Downloader</a></li>
+<li><a href="/instagram" class="nav_link">Instagram Downloader</a></li>
+{% endblock link %}
