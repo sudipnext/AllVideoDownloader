@@ -8,7 +8,7 @@
   <h1 class="video_title">Video title will be here.</h1>
   <div class="video_content">
     <div class="video_img">
-      <img src="" alt="" width="100%" />
+      <img src="" alt="" />
     </div>
     <!-- resolution -->
     <div class="resolution_section" id="resolution_section">
@@ -23,7 +23,7 @@
   <div class="format-select">
     <label for="video-format">Select Format:</label>
     <div class="select">
-      <select name="format" class="formte" id="format">
+      <select name="format" class="formte" id="format" onchange="updateFormat()">
         <option value="mp3">Mp3</option>
         <option value="mp4">Mp4</option>
       </select>
@@ -41,14 +41,16 @@
     const downloadSection = document.querySelector("#download_section");
     const loader = document.querySelector( "#loading" );
     const overlay = document.querySelector( "#overlay" );
-
-    const selectedOption = formatSelect.options[formatSelect.selectedIndex];
-
+    var selectedValue = ""
+    function updateFormat() {
+      var formatSelect = document.getElementById("format");
+      selectedValue = formatSelect.value;
+    }
     search_btn.addEventListener("click", () => {
       overlay.classList.add( 'show_ovelay' );
       loader.classList.add( "display" );
-      console.log(selectedOption.value);
-      if (selectedOption.value === "mp4") {
+      console.log(selectedValue);
+      if (selectedValue === "mp4") {
         url = "http://127.0.0.1:8000/ytb/";
         const payload = {
           video_url: video_url.value,
@@ -86,6 +88,7 @@
           });
       }
     });
+  
   </script>
 
   {% endblock script %}
