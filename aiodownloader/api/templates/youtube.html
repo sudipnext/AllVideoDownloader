@@ -1,4 +1,8 @@
-{% extends 'index.html' %} {% block result %}
+{% extends 'index.html' %}
+{% block input %}
+<input type="text" id="video-url" placeholder="https://www.youtube.com/watch?v=gEPmA3USJdI">
+{% endblock input %}
+{% block result %}
 <div id="result_section" class="result_section">
   <h1 class="video_title">Video title will be here.</h1>
   <div class="video_content">
@@ -15,6 +19,12 @@
       <button onclick="downloadVideo()" class="download_btn">Download</button>
     </div>
   </div>
+  {% block intro %}
+  <div class="intro-text">
+    <h2>Welcome to Video Downloader</h2>
+    <p>Download videos from various platforms in MP3 or MP4 format.</p>
+  </div>
+  {% endblock intro %}
   {% endblock result %} {% block select %}
   <div class="format-select">
     <label for="video-format">Select Format:</label>
@@ -35,71 +45,80 @@
   </div>
   {% endblock select %} {% block script %}
   <script type="text/javascript">
-      const search_btn = document.getElementById("download-btn");
-      const video_url = document.getElementById("video-url");
-      const formatSelect = document.querySelector(".formte");
-      const title = document.querySelector(".video_title");
-      const imgDiv = document.querySelector(".video_img");
-      const imgElement = imgDiv.querySelector("img");
-      const resolution = document.querySelector("#resolution_section");
+    const search_btn = document.getElementById( "download-btn" );
+    const video_url = document.getElementById( "video-url" );
+    const formatSelect = document.querySelector( ".formte" );
+    const title = document.querySelector( ".video_title" );
+    const imgDiv = document.querySelector( ".video_img" );
+    const imgElement = imgDiv.querySelector( "img" );
+    const resolution = document.querySelector( "#resolution_section" );
 
-      var selectedOption = formatSelect.options[formatSelect.selectedIndex];
+    var selectedOption = formatSelect.options[ formatSelect.selectedIndex ];
 
-      search_btn.addEventListener("click", ()=>{
-        console.log(selectedOption.value)
-        if(selectedOption.value === 'mp4'){
-          url="http://127.0.0.1:8000/ytb/"
-          const payload = {
-            video_url: video_url.value
-          };
-          fetch(url, {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: {
-              "Content-Type": "application/json"
-            }
-          })
-            .then(response => response.json())
-            .then(data => {
-              //console.log(data);
-              result_section.style.display = "block";
-              title.innerText = data.title
-              imgElement.src = data.thumbnails
-              let format = data.format
-              console.log(format)
-              let unique=[]
-              format.map(item=>{
-                if(!unique.includes(item.height)){
-                  if(item.height!=null || item.width!=null){
-                    unique.push(item.height)
-                    resolution.innerHTML+=`<p>${item.height} X ${item.width}</p>`
-                  }
+    search_btn.addEventListener( "click", () =>
+    {
+      console.log( selectedOption.value )
+      if ( selectedOption.value === 'mp4' )
+      {
+        url = "http://127.0.0.1:8000/ytb/"
+        const payload = {
+          video_url: video_url.value
+        };
+        fetch( url, {
+          method: "POST",
+          body: JSON.stringify( payload ),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        } )
+          .then( response => response.json() )
+          .then( data =>
+          {
+            //console.log(data);
+            result_section.style.display = "block";
+            title.innerText = data.title
+            imgElement.src = data.thumbnails
+            let format = data.format
+            console.log( format )
+            let unique = []
+            format.map( item =>
+            {
+              if ( !unique.includes( item.height ) )
+              {
+                if ( item.height != null || item.width != null )
+                {
+                  unique.push( item.height )
+                  resolution.innerHTML += `<p>${ item.height } X ${ item.width }</p>`
                 }
-              })
-              
+              }
+            } )
 
 
-            })
-            .catch(error => {
-              console.error("An error occurred:", error);
-            });
+
+          } )
+          .catch( error =>
+          {
+            console.error( "An error occurred:", error );
+          } );
 
 
-        }
+      }
       //  var link=video_url.value
       //  var formate = selectedOption.value
-        //downloadVideo(link, formate)
+      //downloadVideo(link, formate)
 
-      })
-    {% comment %} $(".click-btn-down").click(function(){
-          var link = $(".link").val();
-        var fromate = $(".formte").children("option:selected").val();
-        var src =""+link+"="+fromate+"";
-        downloadVideo(link,fromate);
-      });  {% endcomment %}
-      {% comment %} function downloadVideo(link,fromate) {
-          $('.download-video').html('<iframe style="width:100%;height:60px;border:0;overflow:hidden;" scrolling="no" src="https://loader.to/api/button/?url='+link+'&f='+fromate+'"></iframe>');
-      } {% endcomment %}
+    } )
+    {% comment %} $( ".click-btn-down" ).click( function ()
+    {
+      var link = $( ".link" ).val();
+      var fromate = $( ".formte" ).children( "option:selected" ).val();
+      var src = "" + link + "=" + fromate + "";
+      downloadVideo( link, fromate );
+    } ); {% endcomment %}
+    {% comment %} function downloadVideo ( link, fromate )
+    {
+      $( '.download-video' ).html( '<iframe style="width:100%;height:60px;border:0;overflow:hidden;" scrolling="no" src="https://loader.to/api/button/?url=' + link + '&f=' + fromate + '"></iframe>' );
+    } {% endcomment %}
   </script>
 
   {% endblock script %}

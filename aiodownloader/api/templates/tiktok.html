@@ -1,21 +1,47 @@
-{% extends 'index.html' %} {% block result %}
+{% extends 'index.html' %}
+{% block intro %}
+<div class="intro-text">
+  <h2>Welcome to Tik-Tok Video Downloader</h2>
+  <p>Get your preferred videos from TikTok by downloading them using the video URL.</p>
+</div>
+{% endblock intro %}
+{% block input %}
+<input type="text" id="video-url"
+  placeholder="https://www.tiktok.com/@jayemcs/video/7132815540720078106?q=coding&t=1686288554542">
+{% endblock input %}
+{% block result %}
+<style>
+  .intro-text,
+  .search-container,
+  .result_container,
+  header {
+    background: linear-gradient(92deg, #0e0c1be0 -14.11%, #5c273beb 107.67%);
+    color: white !important;
+  }
 
-<div id="result_section" class="result_section">
-  <h1 class="video_title">Video title will be here.</h1>
-  <div class="video_content">
-   <div class="video_img">
-      <img src="" alt="" width="100%" />
-    </div> 
-    
-    <!-- resolution -->
-    <div class="resolution_section">
-      <h3>Resolution</h3>
-      <p>720</p>
-    </div>
-    <!-- download button -->
-    <div class="download_section">
-      <h3>Download</h3>
-      <button onclick="downloadVideo()" class="download_btn">Download</button>
+  .intro-text>p {
+    color: rgb(186, 183, 183);
+  }
+</style>
+
+<div class="result_container">
+  <div id="result_section" class="result_section">
+    <h1 class="video_title">Video title will be here.</h1>
+    <div class="video_content">
+      <div class="video_img">
+        <img src="" alt="" width="100%" />
+      </div>
+
+      <!-- resolution -->
+      <div class="resolution_section">
+        <h3>Resolution</h3>
+        <p>720</p>
+      </div>
+      <!-- download button -->
+      <div class="download_section">
+        <h3>Download</h3>
+        <button onclick="downloadVideo()" class="download_btn">Download</button>
+      </div>
     </div>
   </div>
   {% endblock result %} {% block script %}
@@ -26,7 +52,7 @@
     const result_section = document.getElementById( "result_section" );
     const loader = document.querySelector( "#loading" );
     const overlay = document.querySelector( "#overlay" );
-    var imgElement = document.querySelector('.video_img img');
+    var imgElement = document.querySelector( '.video_img img' );
 
 
 
@@ -76,7 +102,7 @@
   </script>
 
   {% endblock script %}
- </div>
+</div>
 </div>
 
 {% block link %}

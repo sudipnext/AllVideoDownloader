@@ -66,17 +66,17 @@ h3 {
 
 .intro-text {
   text-align: center;
-  margin-block: 20px;
+  padding-block: 20px;
 }
 
 .intro-text > h2 {
   padding: 1rem 0;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 600;
 }
 
 .intro-text > p {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   color: #555;
   margin-bottom: 2rem;
@@ -84,20 +84,20 @@ h3 {
 
 .search-container {
   text-align: center;
-  margin-bottom: 20px;
-  margin-block: 3rem;
+
+  padding-block: 3rem;
 }
 
 .search-box {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .search-box input[type="text"] {
-  width: 400px;
-  padding: 15px 16px;
+  width: 500px;
+  padding: 18px 16px;
   font-size: 16px;
   border: 1px solid #555;
   border-radius: 5px 0 0 5px;
@@ -114,7 +114,7 @@ input:-webkit-autofill:active {
 }
 
 #download-btn {
-  padding: 15px 25px;
+  padding: 18px 25px;
   font-size: 16px;
   background-color: #333;
   color: #fff;
@@ -199,8 +199,8 @@ label {
   display: none;
   text-align: center;
   width: 80%;
-  margin: 4rem auto;
-  padding-block: 3rem;
+  margin: 0rem auto;
+  padding-block: 6rem;
 }
 
 .video_content {
@@ -215,6 +215,15 @@ label {
   width: 100%;
   height: 300px;
   background-color: #1f9d86;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0px 1px 12px 20px #00000029;
+}
+.video_img > img {
+  width: 100%;
+  display: block;
+  height: 100%;
+  object-fit: cover;
 }
 
 .resolution_section {
@@ -254,7 +263,7 @@ label {
 
 .ads-section {
   text-align: center;
-  margin-bottom: 40px;
+  margin-block: 40px;
 }
 
 .ads {

@@ -21,11 +21,13 @@
       <nav>
         <ul>
           {% block link %}
-          <li><a href="/" class="active nav_link" >YouTube Downloader</a></li>
-          <li><a href="/tik-tok" class="nav_link" onclick="changeActiveLink(event, '/tik-tok')">TikTok Downloader</a></li>
-          <li><a href="/instagram" class="nav_link" onclick="changeActiveLink(event, '/instagram')">Instagram Downloader</a></li>
+          <li><a href="/" class="active nav_link">YouTube Downloader</a></li>
+          <li><a href="/tik-tok" class="nav_link" onclick="changeActiveLink(event, '/tik-tok')">TikTok Downloader</a>
+          </li>
+          <li><a href="/instagram" class="nav_link" onclick="changeActiveLink(event, '/instagram')">Instagram
+              Downloader</a></li>
           {% endblock link %}
-          
+
         </ul>
       </nav>
     </header>
@@ -80,14 +82,18 @@
     <main style="position: relative;">
       <div id="loading"></div>
       <div id="overlay"></div>
-      <div class="intro-text">
-        <h2>Welcome to Video Downloader</h2>
-        <p>Download videos from various platforms in MP3 or MP4 format.</p>
+      <div>
+        {% block intro %}
+
+        {% endblock intro %}
       </div>
+
+
       <div class="search-container">
         <div class="search-box">
+          {% block input %}
 
-          <input type="text" id="video-url" placeholder="Enter video URL here.">
+          {% endblock input %}
           <button id="download-btn">Search</button>
         </div>
 
