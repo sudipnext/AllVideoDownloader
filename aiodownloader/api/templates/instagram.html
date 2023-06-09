@@ -11,13 +11,26 @@
 {% endblock input %}
 {% block result %}
 <style>
-  /* .container {
-    background: #f09433;
-    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f09433', endColorstr='#bc1888', GradientType=1);
-  } */
+  .intro-text,
+  .search-container,
+  .result_container,
+  header {
+    background: linear-gradient(90deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: white !important;
+  }
+
+  .intro-text>p {
+    color: rgb(210, 203, 203);
+  }
+
+  .result_container {
+    border-top: 2px solid rgb(186, 183, 183);
+  }
+
+  .link_container>p {
+    color: #dc2743;
+    font-size: 16px;
+  }
 </style>
 
 <div class="result_container">
@@ -55,6 +68,7 @@
     search_btn.addEventListener( "click", () =>
     {
       overlay.classList.add( 'show_ovelay' );
+      document.body.style.overflow = "hidden";
       loader.classList.add( "display" );
       url = "http://127.0.0.1:8000/insta/";
       const payload = {
@@ -71,6 +85,7 @@
         .then( ( data ) =>
         {
           overlay.classList.remove( 'show_ovelay' );
+          document.body.style.overflow = "auto";
           loader.classList.remove( "display" );
           result_section.style.display = "block";
           title.innerText = data.description;
