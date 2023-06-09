@@ -26,6 +26,8 @@
     const loader = document.querySelector( "#loading" );
     const overlay = document.querySelector( "#overlay" );
 
+
+
     let download_url;
     search_btn.addEventListener( "click", () => getDownloadUrl() );
     async function getDownloadUrl ()
@@ -71,4 +73,13 @@
   </script>
 
   {% endblock script %}
+  <<<<<<< HEAD </div>
+    =======
 </div>
+
+{% block link %}
+<li><a href="/" class="nav_link">YouTube Downloader</a></li>
+<li><a href="/tik-tok" class="active nav_link">TikTok Downloader</a></li>
+<li><a href="/instagram" class="nav_link">Instagram Downloader</a></li>
+{% endblock link %}
+>>>>>>> 3caebb8605b60318947566e9c18697c7c3d51abe

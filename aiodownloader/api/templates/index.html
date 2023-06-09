@@ -20,10 +20,12 @@
       </div>
       <nav>
         <ul>
-          <li><a href="/" class="active nav_link" onclick="chanageActiveLink(event)">YouTube Downloader</a></li>
-          <li><a href="/tik-tok" class="nav_link" onclick="chanageActiveLink(event)">TikTok Downloader</a></li>
-          <li><a href="/instagram" class="nav_link" onclick="chanageActiveLink(event)">Instagram Downloader</a>
-          </li>
+          {% block link %}
+          <li><a href="/" class="active nav_link" >YouTube Downloader</a></li>
+          <li><a href="/tik-tok" class="nav_link" onclick="changeActiveLink(event, '/tik-tok')">TikTok Downloader</a></li>
+          <li><a href="/instagram" class="nav_link" onclick="changeActiveLink(event, '/instagram')">Instagram Downloader</a></li>
+          {% endblock link %}
+          
         </ul>
       </nav>
     </header>
