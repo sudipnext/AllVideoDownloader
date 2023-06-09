@@ -24,6 +24,7 @@ header {
   background-color: #333;
   color: #fff;
   padding: 20px;
+  padding-top: 25px;
 }
 
 .logo {
@@ -32,7 +33,7 @@ header {
 }
 
 nav {
-  width: 80%;
+  width: 90%;
   text-align: center;
 }
 

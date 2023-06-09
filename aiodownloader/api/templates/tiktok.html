@@ -22,6 +22,10 @@
   .intro-text>p {
     color: rgb(186, 183, 183);
   }
+
+  .result_container {
+    border-top: 2px solid rgb(186, 183, 183);
+  }
 </style>
 
 <div class="result_container">
@@ -44,7 +48,8 @@
       </div>
     </div>
   </div>
-  {% endblock result %} {% block script %}
+  {% endblock result %}
+  {% block script %}
   <script>
     const title = document.querySelector( ".video_title" );
     const search_btn = document.getElementById( "download-btn" );

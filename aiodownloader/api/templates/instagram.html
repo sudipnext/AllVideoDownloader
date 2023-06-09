@@ -1,7 +1,8 @@
 {% extends 'index.html' %}
+
 {% block intro %}
 <div class="intro-text">
-  <h2>Welcome to Video Downloader</h2>
+  <h2>Welcome to Instagram Video Downloader</h2>
   <p>Get your preferred videos from Instagram by downloading them using the reel URL.</p>
 </div>
 {% endblock intro %}
@@ -9,70 +10,87 @@
 <input type="text" id="video-url" placeholder="https://www.instagram.com/reels/CtB8J5kg7j6/">
 {% endblock input %}
 {% block result %}
-<div id="result_section" class="result_section">
-  <h1 class="video_title">Video title will be here.</h1>
-  <div class="video_content">
-    <div class="video_img">
-      <img src="" alt="" />
-    </div>
-    <!-- resolution -->
-    <div class="resolution_section">
-      <h3>Resolution</h3>
-      <p>720</p>
-    </div>
-    <!-- download button -->
-    <div class="download_section">
-      <h3>Download</h3>
-      <button onclick="downloadVideo()" class="download_btn">Download</button>
+<style>
+  /* .container {
+    background: #f09433;
+    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f09433', endColorstr='#bc1888', GradientType=1);
+  } */
+</style>
+
+<div class="result_container">
+  <div id="result_section" class="result_section">
+    <h1 class="video_title">Video title will be here.</h1>
+    <div class="video_content">
+      <div class="video_img">
+        <img src="" alt="" />
+      </div>
+      <!-- resolution -->
+      <div class="resolution_section">
+        <h3>Resolution</h3>
+        <p>720</p>
+      </div>
+      <!-- download button -->
+      <div class="download_section">
+        <h3>Download</h3>
+        <button onclick="downloadVideo()" class="download_btn">Download</button>
+      </div>
     </div>
   </div>
-</div>
 
-{% endblock result %} {% block script %}
-<script type="text/javascript">
-  const search_btn = document.getElementById( "download-btn" );
-  const video_url = document.getElementById( "video-url" );
-  const title = document.querySelector( ".video_title" );
-  const imgDiv = document.querySelector( ".video_img" );
-  const imgElement = imgDiv.querySelector( "img" );
-  const loader = document.querySelector( "#loading" );
-  const overlay = document.querySelector( "#overlay" );
 
-  search_btn.addEventListener( "click", () =>
-  {
-    overlay.classList.add( 'show_ovelay' );
-    loader.classList.add( "display" );
-    url = "http://127.0.0.1:8000/insta/";
-    const payload = {
-      video_url: video_url.value,
-    };
-    fetch( url, {
-      method: "POST",
-      body: JSON.stringify( payload ),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    } )
-      .then( ( response ) => response.json() )
-      .then( ( data ) =>
-      {
-        overlay.classList.remove( 'show_ovelay' );
-        loader.classList.remove( "display" );
-        result_section.style.display = "block";
-        title.innerText = data.description;
-        download_url = data.download_url;
+  {% endblock result %}
+  {% block script %}
+  <script type="text/javascript">
+    const search_btn = document.getElementById( "download-btn" );
+    const video_url = document.getElementById( "video-url" );
+    const title = document.querySelector( ".video_title" );
+    const imgDiv = document.querySelector( ".video_img" );
+    const imgElement = imgDiv.querySelector( "img" );
+    const loader = document.querySelector( "#loading" );
+    const overlay = document.querySelector( "#overlay" );
+
+    search_btn.addEventListener( "click", () =>
+    {
+      overlay.classList.add( 'show_ovelay' );
+      loader.classList.add( "display" );
+      url = "http://127.0.0.1:8000/insta/";
+      const payload = {
+        video_url: video_url.value,
+      };
+      fetch( url, {
+        method: "POST",
+        body: JSON.stringify( payload ),
+        headers: {
+          "Content-Type": "application/json",
+        },
       } )
-      .catch( ( error ) =>
-      {
-        console.error( "An error occurred:", error );
-      } );
-  } );
-  function downloadVideo ()
-  {
-    location.href = download_url;
-  }
-</script>
-{% endblock script %} {% block link %}
+        .then( ( response ) => response.json() )
+        .then( ( data ) =>
+        {
+          overlay.classList.remove( 'show_ovelay' );
+          loader.classList.remove( "display" );
+          result_section.style.display = "block";
+          title.innerText = data.description;
+          download_url = data.download_url;
+        } )
+        .catch( ( error ) =>
+        {
+          console.error( "An error occurred:", error );
+        } );
+    } );
+    function downloadVideo ()
+    {
+      location.href = download_url;
+    }
+  </script>
+
+  {% endblock script %}
+</div>
+</div>
+{% block link %}
 <li><a href="/" class="nav_link">YouTube Downloader</a></li>
 <li><a href="/tik-tok" class="nav_link">TikTok Downloader</a></li>
 <li><a href="/instagram" class="active nav_link">Instagram Downloader</a></li>
