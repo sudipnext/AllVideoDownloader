@@ -1,4 +1,14 @@
-{% extends 'index.html' %} {% block result %}
+{% extends 'index.html' %}
+{% block intro %}
+<div class="intro-text">
+  <h2>Welcome to Video Downloader</h2>
+  <p>Get your preferred videos from Instagram by downloading them using the reel URL.</p>
+</div>
+{% endblock intro %}
+{% block input %}
+<input type="text" id="video-url" placeholder="https://www.instagram.com/reels/CtB8J5kg7j6/">
+{% endblock input %}
+{% block result %}
 <div id="result_section" class="result_section">
   <h1 class="video_title">Video title will be here.</h1>
   <div class="video_content">
@@ -20,41 +30,45 @@
 
 {% endblock result %} {% block script %}
 <script type="text/javascript">
-  const search_btn = document.getElementById("download-btn");
-  const video_url = document.getElementById("video-url");
-  const title = document.querySelector(".video_title");
-  const imgDiv = document.querySelector(".video_img");
-  const imgElement = imgDiv.querySelector("img");
+  const search_btn = document.getElementById( "download-btn" );
+  const video_url = document.getElementById( "video-url" );
+  const title = document.querySelector( ".video_title" );
+  const imgDiv = document.querySelector( ".video_img" );
+  const imgElement = imgDiv.querySelector( "img" );
   const loader = document.querySelector( "#loading" );
   const overlay = document.querySelector( "#overlay" );
 
-  search_btn.addEventListener("click", () => {
+  search_btn.addEventListener( "click", () =>
+  {
     overlay.classList.add( 'show_ovelay' );
     loader.classList.add( "display" );
     url = "http://127.0.0.1:8000/insta/";
     const payload = {
       video_url: video_url.value,
     };
-    fetch(url, {
+    fetch( url, {
       method: "POST",
-      body: JSON.stringify(payload),
+      body: JSON.stringify( payload ),
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((response) => response.json())
-      .then((data) => {
+    } )
+      .then( ( response ) => response.json() )
+      .then( ( data ) =>
+      {
         overlay.classList.remove( 'show_ovelay' );
         loader.classList.remove( "display" );
         result_section.style.display = "block";
         title.innerText = data.description;
         download_url = data.download_url;
-      })
-      .catch((error) => {
-        console.error("An error occurred:", error);
-      });
-  });
-  function downloadVideo() {
+      } )
+      .catch( ( error ) =>
+      {
+        console.error( "An error occurred:", error );
+      } );
+  } );
+  function downloadVideo ()
+  {
     location.href = download_url;
   }
 </script>
