@@ -5,10 +5,8 @@ from .serializers import *
 from django.template import loader
 import requests
 import instaloader
-import html
 import re
 import os
-from bs4 import BeautifulSoup
 from django.http import FileResponse
 from django.conf import settings
 
@@ -30,10 +28,14 @@ class TiktokDownload(APIView):
         serializer = TikTokSerializer(data=request.data)
         if serializer.is_valid():
             video_url = serializer.validated_data['video_url']
+            tiktokofficial = requests.get('https://www.tiktok.com/oembed/', params={'url': video_url})
+            data = tiktokofficial.json()
             response = requests.get('https://www.cloudconversion.online/ssstik/', params={'video': video_url})
             response = response.json()
-            description = get_description(video_url)
+            description = data["title"]
+            thumbnail_url = data["thumbnail_url"]
             response['description'] = description
+            response['thumbnail_url'] = thumbnail_url
             return Response(response)
         return Response(serializer.errors, status=400)
 
@@ -87,26 +89,6 @@ def InstaDownloader(url):
     return {"description":description, "download_url": download_url}
 
 
-# tiktok_description_fetching for tiktok
-def get_description(url):
-    web_response = requests.get(url)
-    soup = BeautifulSoup(web_response.content, "html.parser")
-    meta_tag = soup.find('meta', attrs={'name': 'description'})
-
-    if meta_tag is not None:
-        content_value = meta_tag['content']
-        decoded_value = html.unescape(content_value)
-        start_text = '&quot;'
-        end_text = '&quot;.'
-        start_index = decoded_value.find(start_text) + len(start_text)
-        end_index = decoded_value.find(end_text)
-        desired_text = decoded_value[start_index:end_index]
-        pattern = r'TikTok video from (.+?): "(.+)"\.'
-        matches = re.search(pattern, desired_text)
-        return matches.group(2)
-    else:
-        return "No matching meta tag found."
-#serving instagram videos
 def serve_video(request, video_code):
     video_filename = f"{video_code}.mp4"
     video_path = os.path.join(settings.BASE_DIR, 'downloads', video_filename)

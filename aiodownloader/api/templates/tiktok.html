@@ -3,9 +3,10 @@
 <div id="result_section" class="result_section">
   <h1 class="video_title">Video title will be here.</h1>
   <div class="video_content">
-    <div class="video_img">
-      <img src="" alt="" />
-    </div>
+   <div class="video_img">
+      <img src="" alt="" width="100%" />
+    </div> 
+    
     <!-- resolution -->
     <div class="resolution_section">
       <h3>Resolution</h3>
@@ -25,6 +26,7 @@
     const result_section = document.getElementById( "result_section" );
     const loader = document.querySelector( "#loading" );
     const overlay = document.querySelector( "#overlay" );
+    var imgElement = document.querySelector('.video_img img');
 
 
 
@@ -59,6 +61,7 @@
           loader.classList.remove( "display" );
           result_section.style.display = "block";
           title.innerText = data.description
+          imgElement.src = data.thumbnail_url;
           download_url = data.download_url;
         }
       } else
