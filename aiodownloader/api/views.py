@@ -10,7 +10,7 @@ import os
 from django.http import FileResponse
 from django.conf import settings
 
-
+#Static file views
 def InstaGramView(request):
     template = loader.get_template('instagram.html')
     return HttpResponse(template.render())
@@ -46,7 +46,7 @@ class YoutubeDownload(APIView):
         serializer = YoutubeSerializer(data=request.data)
         if serializer.is_valid():
             video_url = serializer.validated_data['video_url']
-            response = requests.get('https://api.youtubemultidownloader.com/video', params={'url': video_url})
+            response = requests.get('https://cdn1.savetube.me/info', params={'url': video_url})
             if response.status_code == 200:
                 try:
                     response_json = response.json()
@@ -57,6 +57,7 @@ class YoutubeDownload(APIView):
                 return Response({'error': f'Failed to retrieve YouTube video information: {response.status_code}'}, status=500)
             
         return Response(serializer.errors, status=400)
+
   
 
 class InstaDownload(APIView):

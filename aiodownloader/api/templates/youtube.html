@@ -1,44 +1,29 @@
 {% extends 'index.html' %}
 {% block input %}
-<input type="text" id="video-url" placeholder="https://www.youtube.com/watch?v=gEPmA3USJdI">
+<input type="text" id="video-url" placeholder="https://youtu.be/81DnLf00zqQ">
 {% endblock input %}
 {% block result %}
 <div id="result_section" class="result_section">
   <h1 class="video_title">Video title will be here.</h1>
   <div class="video_content">
     <div class="video_img">
-      <img src="" alt="" width="100%" height="100%" />
+      <img src="" alt="" />
     </div>
     <!-- resolution -->
     <div class="resolution_section" id="resolution_section">
       <h3>Resolution</h3>
     </div>
     <!-- download button -->
-    <div class="download_section">
+    <div class="download_section" id="download_section">
       <h3>Download</h3>
-      <button onclick="downloadVideo()" class="download_btn">Download</button>
     </div>
   </div>
-  {% block intro %}
-  <div class="intro-text">
-    <h2>Welcome to Youtube Video Downloader</h2>
-    <p>Download videos from various platforms in MP3 or MP4 format.</p>
-  </div>
-  {% endblock intro %}
   {% endblock result %} {% block select %}
   <div class="format-select">
     <label for="video-format">Select Format:</label>
     <div class="select">
-      <select name="format" class="formte" id="format">
+      <select name="format" class="formte" id="format" onchange="updateFormat()">
         <option value="mp3">Mp3</option>
-        {% comment %}
-        <option value="mp4a">144 Mp4</option>
-        <option value="360">360 Mp4</option>
-        <option value="480">480 Mp4</option>
-        <option value="720">720 Mp4</option>
-        <option value="1080">1080 Mp4</option>
-        <option value="4k">4k Mp4</option>
-        {% endcomment %}
         <option value="mp4">Mp4</option>
       </select>
     </div>
@@ -52,73 +37,65 @@
     const imgDiv = document.querySelector( ".video_img" );
     const imgElement = imgDiv.querySelector( "img" );
     const resolution = document.querySelector( "#resolution_section" );
-
-    var selectedOption = formatSelect.options[ formatSelect.selectedIndex ];
-
+    const downloadSection = document.querySelector( "#download_section" );
+    const loader = document.querySelector( "#loading" );
+    const overlay = document.querySelector( "#overlay" );
+    var selectedValue = ""
+    function updateFormat ()
+    {
+      var formatSelect = document.getElementById( "format" );
+      selectedValue = formatSelect.value;
+    }
     search_btn.addEventListener( "click", () =>
     {
-      console.log( selectedOption.value )
-      if ( selectedOption.value === 'mp4' )
+      overlay.classList.add( 'show_ovelay' );
+      loader.classList.add( "display" );
+      console.log( selectedValue );
+      if ( selectedValue === "mp4" )
       {
-        url = "http://127.0.0.1:8000/ytb/"
+        url = "http://127.0.0.1:8000/ytb/";
         const payload = {
-          video_url: video_url.value
+          video_url: video_url.value,
         };
         fetch( url, {
           method: "POST",
           body: JSON.stringify( payload ),
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         } )
-          .then( response => response.json() )
-          .then( data =>
+          .then( ( response ) => response.json() )
+          .then( ( data ) =>
           {
             //console.log(data);
+            overlay.classList.remove( 'show_ovelay' );
+            loader.classList.remove( "display" );
             result_section.style.display = "block";
-            title.innerText = data.title
-            imgElement.src = data.thumbnails
-            let format = data.format
-            console.log( format )
-            let unique = []
-            format.map( item =>
+            title.innerText = data.data.title;
+            imgElement.src = data.data.thumbnail;
+            let format = data.data.video_formats;
+            let unique = [];
+            console.log( format );
+            format.map( ( item ) =>
             {
-              if ( !unique.includes( item.height ) )
+              if ( !unique.includes( item.url ) )
               {
-                if ( item.height != null || item.width != null )
+                unique.push( item.url );
+                if ( item.url != null )
                 {
-                  unique.push( item.height )
-                  resolution.innerHTML += `<p>${ item.height } X ${ item.width }</p>`
+                  resolution.innerHTML += `<p>${ item.height } X ${ item.width }</p>`;
+                  downloadSection.innerHTML += `<a href="${ item.url }&title=${ data.data.title }" class="download_btn">Download</a>`;
                 }
               }
-            } )
-
-
-
+            } );
           } )
-          .catch( error =>
+          .catch( ( error ) =>
           {
             console.error( "An error occurred:", error );
           } );
-
-
       }
-      //  var link=video_url.value
-      //  var formate = selectedOption.value
-      //downloadVideo(link, formate)
+    } );
 
-    } )
-    {% comment %} $( ".click-btn-down" ).click( function ()
-    {
-      var link = $( ".link" ).val();
-      var fromate = $( ".formte" ).children( "option:selected" ).val();
-      var src = "" + link + "=" + fromate + "";
-      downloadVideo( link, fromate );
-    } ); {% endcomment %}
-    {% comment %} function downloadVideo ( link, fromate )
-    {
-      $( '.download-video' ).html( '<iframe style="width:100%;height:60px;border:0;overflow:hidden;" scrolling="no" src="https://loader.to/api/button/?url=' + link + '&f=' + fromate + '"></iframe>' );
-    } {% endcomment %}
   </script>
 
   {% endblock script %}
