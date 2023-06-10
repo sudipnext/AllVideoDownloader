@@ -1,3 +1,4 @@
 env/
 aiodownloader/__pycache__/
 api/__pycache__/
+downloads/
