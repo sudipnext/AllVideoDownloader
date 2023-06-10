@@ -11,6 +11,9 @@ import os
 from django.http import FileResponse
 from django.conf import settings
 
+from django.urls import resolve
+
+
 #Static file views
 def InstaGramView(request):
     template = loader.get_template('instagram.html')
@@ -81,11 +84,11 @@ class InstaDownload(APIView):
         serializer = InstagramSerializer(data=request.data)
         if serializer.is_valid():
             video_url = serializer.validated_data['video_url']
-            res = InstaDownloader(video_url)
+            res = download_insta(video_url, request)
             return Response(res, 200)
         
 #downloads the file
-def InstaDownloader(url):
+def download_insta(url, request):
     L = instaloader.Instaloader()
     shortcode = re.findall(r'/([A-Za-z0-9_-]+?)/?$', url)[0]
     post = instaloader.Post.from_shortcode(L.context, shortcode)
@@ -102,7 +105,7 @@ def InstaDownloader(url):
         new_filename = f"{shortcode}{os.path.splitext(filename)[1]}"
         new_path = os.path.join(target, new_filename)
         os.rename(old_path, new_path)
-    download_url = f"http://localhost:8000/media/videos/{shortcode}/"
+    download_url = f"http://{request.META['HTTP_HOST']}/media/videos/{shortcode}/"
     return {"description":description, "download_url": download_url}
 
 

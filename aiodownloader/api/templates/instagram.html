@@ -72,7 +72,7 @@
       overlay.classList.add( 'show_ovelay' );
       document.body.style.overflow = "hidden";
       loader.classList.add( "display" );
-      url = "http://127.0.0.1:8000/insta/";
+      url = location.origin + "/insta/";
       const payload = {
         video_url: video_url.value,
       };

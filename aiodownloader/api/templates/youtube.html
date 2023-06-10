@@ -92,7 +92,7 @@
         console.log( selectedValue );
         if (selectedValue !="")
         {
-          url = "http://127.0.0.1:8000/ytb/";
+          url = location.origin +  "/ytb/";
           const payload = {
             video_url: video_url.value,
             format: selectedValue
