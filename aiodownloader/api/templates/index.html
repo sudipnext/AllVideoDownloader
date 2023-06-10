@@ -15,10 +15,10 @@
   <div class="container">
     <header>
       <div class="logo">
-        <h1>Logo</h1>
-        <!-- <img src="logo.png" alt="Video Downloader Logo"> -->
+
+        <img src="{% static '/images/logo.png' %}" alt="Video Downloader Logo">
       </div>
-      <nav>
+      <nav class="nav">
         <ul>
           {% block link %}
           <li><a href="/" class="active nav_link">YouTube Downloader</a></li>
@@ -30,6 +30,11 @@
 
         </ul>
       </nav>
+      <div class="ham_menu">
+        <p class="line"></p>
+        <p class="line"></p>
+        <p class="line"></p>
+      </div>
     </header>
     <style>
       /* loading animation */
@@ -227,6 +232,26 @@
     <p>&copy; 2023 Video Downloader. All rights reserved.</p>
   </footer>
   </div>
+  <script>
+    const ham_menu = document.querySelector( '.ham_menu' );
+    const nav = document.querySelector( '.nav' );
+    ham_menu.addEventListener( 'click', () =>
+    {
+      if ( nav.classList.contains( 'show_nav' ) )
+      {
+        document.body.style.overflow = "auto";
+        ham_menu.classList.remove( 'show_cross' )
+        nav.classList.remove( 'show_nav' );
+      } else
+      {
+
+        document.body.style.overflow = "hidden";
+        ham_menu.classList.add( 'show_cross' )
+        nav.classList.add( 'show_nav' );
+      }
+
+    } )
+  </script>
 
   {% block script %}
 

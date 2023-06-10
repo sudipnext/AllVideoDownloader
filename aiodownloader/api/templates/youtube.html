@@ -1,24 +1,63 @@
 {% extends 'index.html' %}
+{% block intro %}
+<div class="intro-text">
+  <h2>Welcome to YouTube Video Downloader</h2>
+  <p>Get your preferred videos from YouTube by downloading them using the video URL.</p>
+</div>
+{% endblock intro %}
 {% block input %}
 <input type="text" id="video-url" placeholder="https://youtu.be/81DnLf00zqQ">
 {% endblock input %}
 {% block result %}
-<div id="result_section" class="result_section">
-  <h1 class="video_title">Video title will be here.</h1>
-  <div class="video_content">
-    <div class="video_img">
-      <img src="" alt="" />
-    </div>
-    <!-- resolution -->
-    <div class="resolution_section" id="resolution_section">
-      <h3>Resolution</h3>
-    </div>
-    <!-- download button -->
-    <div class="download_section" id="download_section">
-      <h3>Download</h3>
+<style>
+  .intro-text,
+  .search-container,
+  .result_container,
+  header {
+    /* background-image: linear-gradient(90deg, #e52d27d3, #b31217); */
+    background-image: linear-gradient(90deg, #753a88, #cc2b5e);
+    color: white !important;
+  }
+
+  .result_section {
+    display: block;
+  }
+
+  .intro-text>p {
+    color: #ffffff85;
+  }
+
+  .result_container {
+    border-top: 2px solid rgb(186, 183, 183);
+  }
+</style>
+<div>
+  <div class="result_container">
+    <div id="result_section" class="result_section">
+      <h1 class="video_title">Video title will be here.</h1>
+      <div class="video_content">
+        <div class="video_img">
+          <img src="" alt="" />
+        </div>
+        <div class="download_resolution">
+          <!-- resolution -->
+          <div class="resolution_section" id="resolution_section">
+            <h3>Resolution</h3>
+            <p>720</p>
+          </div>
+          <!-- download button -->
+          <div class="download_section" id="download_section">
+            <h3>Download</h3>
+            <button onclick="downloadVideo()" class="download_btn">Download</button>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
-  {% endblock result %} {% block select %}
+  {% endblock result %}
+
+  {% block select %}
   <div class="format-select">
     <label for="video-format">Select Format:</label>
     <div class="select">
@@ -28,7 +67,8 @@
       </select>
     </div>
   </div>
-  {% endblock select %} {% block script %}
+  {% endblock select %}
+  {% block script %}
   <script type="text/javascript">
     const search_btn = document.getElementById( "download-btn" );
     const video_url = document.getElementById( "video-url" );
@@ -50,6 +90,7 @@
     {
       overlay.classList.add( 'show_ovelay' );
       loader.classList.add( "display" );
+      document.body.style.overflow = "hidden";
       console.log( selectedValue );
       if ( selectedValue === "mp4" )
       {
@@ -69,6 +110,7 @@
           {
             //console.log(data);
             overlay.classList.remove( 'show_ovelay' );
+            document.body.style.overflow = "auto";
             loader.classList.remove( "display" );
             result_section.style.display = "block";
             title.innerText = data.data.title;
@@ -99,4 +141,5 @@
   </script>
 
   {% endblock script %}
+</div>
 </div>

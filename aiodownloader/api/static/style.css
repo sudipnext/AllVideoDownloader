@@ -26,10 +26,28 @@ header {
   padding: 20px;
   padding-top: 25px;
 }
+.ham_menu {
+  cursor: pointer;
+  display: none;
+}
+.line {
+  background-color: #2b2e2e;
+  border-radius: 5px;
+  width: 30px;
+  padding: 2px 0;
+  margin: 4px 0;
+}
 
 .logo {
-  margin-right: auto;
+  margin-left: 2rem;
   max-width: 20%;
+  width: 60px;
+  height: 60px;
+}
+.logo > img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 nav {
@@ -119,7 +137,7 @@ input:-webkit-autofill:active {
   font-size: 16px;
   background-color: #333;
   color: #fff;
-  border: 1px solid #333;
+  border: none;
   border-radius: 0px 5px 5px 0;
   cursor: pointer;
   outline: none;
@@ -128,7 +146,6 @@ input:-webkit-autofill:active {
 
 #download-btn:hover {
   background-color: #555;
-  border-color: #555;
 }
 
 .format-select {
@@ -211,7 +228,14 @@ label {
   gap: 1rem;
   justify-content: space-between;
 }
+.download_resolution {
+  width: 50%;
+  /* background-color: #23b499; */
 
+  display: flex;
+  justify-content: start;
+  gap: 12rem;
+}
 .video_img {
   max-width: 300px;
   width: 100%;
@@ -370,7 +394,9 @@ label {
   height: 200px;
   width: 300px;
   border-radius: 5px;
-  border: 2px solid #383e3d;
+  border-width: 5px;
+  border-style: solid;
+  border-image: linear-gradient(to right, red, blue) 1;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -387,9 +413,6 @@ label {
 .tiktok-img:hover,
 .insta-img:hover {
   /* border: 4px solid #1f9d86; */
-  border-width: 5px;
-  border-style: solid;
-  border-image: linear-gradient(to right, red, blue) 1;
 }
 
 .tiktok-img:hover svg,
@@ -455,4 +478,103 @@ footer {
 
 footer p {
   margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .logo {
+    margin-left: 0rem;
+  }
+  .ham_menu {
+    display: block;
+  }
+  header {
+    justify-content: space-between;
+  }
+  nav {
+    position: absolute;
+    top: 6rem;
+    background-color: #220b30;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    z-index: 50;
+    transform: translateX(-250%);
+    transition: transform 500ms ease-out;
+  }
+  .show_nav {
+    transform: translateX(0%);
+    transition: transform 500ms ease-in-out;
+  }
+  .show_cross .line:last-child {
+    display: none;
+  }
+  .show_cross .line:first-child {
+    transform: rotate(22deg) translateY(10px);
+  }
+  .show_cross .line:nth-child(2) {
+    transform: rotate(292deg) translateY(-2px) translateX(-2px);
+  }
+  .show_cross {
+    transition: transform 300ms ease-in-out;
+    transform: translateY(-7px) rotate(290deg);
+  }
+  nav > ul {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  nav > ul > li {
+    border-bottom: 1px solid ghostwhite;
+    padding-bottom: 2rem;
+  }
+  .intro-text {
+    padding-inline: 2rem;
+  }
+  .intro-text > h2 {
+    font-size: 25px;
+  }
+  .intro-text > p {
+    font-size: 16px;
+  }
+  .search-box {
+    padding-inline: 20px;
+  }
+  .search-box input[type="text"] {
+    width: 100%;
+    max-width: 500px;
+    font-size: 14px;
+  }
+  .video_content {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+  }
+  .download_resolution {
+    width: 60%;
+    justify-content: space-between;
+    gap: 0;
+  }
+  .how-to-section ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .how-to-section > ul > li {
+    min-width: 218px;
+  }
+
+  .link_containers {
+    flex-wrap: wrap;
+  }
+  .other_links {
+    width: 90%;
+  }
+}
+@media (max-width: 600px) {
+  .download_resolution {
+    width: 90%;
+    justify-content: space-between;
+    gap: 0;
+  }
 }

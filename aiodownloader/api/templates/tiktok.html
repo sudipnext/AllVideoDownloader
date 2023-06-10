@@ -36,15 +36,17 @@
         <img src="" alt="" width="100%" />
       </div>
 
-      <!-- resolution -->
-      <div class="resolution_section">
-        <h3>Resolution</h3>
-        <p>720</p>
-      </div>
-      <!-- download button -->
-      <div class="download_section">
-        <h3>Download</h3>
-        <button onclick="downloadVideo()" class="download_btn">Download</button>
+      <div class="download_resolution">
+        <!-- resolution -->
+        <div class="resolution_section">
+          <h3>Resolution</h3>
+          <p>720</p>
+        </div>
+        <!-- download button -->
+        <div class="download_section">
+          <h3>Download</h3>
+          <button onclick="downloadVideo()" class="download_btn">Download</button>
+        </div>
       </div>
     </div>
   </div>
@@ -73,6 +75,7 @@
       {
         overlay.classList.add( 'show_ovelay' );
         loader.classList.add( "display" );
+        document.body.style.overflow = "hidden";
         const payload = {
           video_url: video_url.value,
         };
@@ -89,6 +92,7 @@
         if ( response.status === 200 )
         {
           overlay.classList.remove( 'show_ovelay' );
+          document.body.style.overflow = "auto";
           loader.classList.remove( "display" );
           result_section.style.display = "block";
           title.innerText = data.description
