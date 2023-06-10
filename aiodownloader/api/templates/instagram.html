@@ -96,6 +96,10 @@
         .catch( ( error ) =>
         {
           console.error( "An error occurred:", error );
+          result_section.style.display = "block";
+          result_section.innerHTML = `<p>Sorry!, Can't download video at the very moment, Please check your internet connection. Or be sure that your Url is correct !</p>`
+          loader.classList.remove( "display" );
+          overlay.classList.remove( 'show_ovelay' );
         } );
     } );
     function downloadVideo ()

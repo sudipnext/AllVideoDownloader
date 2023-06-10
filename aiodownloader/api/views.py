@@ -10,7 +10,6 @@ import time
 import os
 from django.http import FileResponse
 from django.conf import settings
-import json
 
 #Static file views
 def InstaGramView(request):
