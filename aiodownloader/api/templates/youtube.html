@@ -18,9 +18,6 @@
     background-image: linear-gradient(90deg, #753a88, #cc2b5e);
     color: white !important;
   }
-
-
-
   .intro-text>p {
     color: #ffffff85;
   }
@@ -62,80 +59,75 @@
       <select name="format" class="formte" id="format" onchange="updateFormat()">
         <option value="mp3">Mp3</option>
         <option value="mp4">Mp4</option>
+        <option value="360">Mp4 360</option>
+        <option value="480">Mp4 480</option>
+        <option value="720">Mp4 720</option>
+        <option value="1080">Mp4 1080</option>
       </select>
     </div>
   </div>
   {% endblock select %}
   {% block script %}
-  <script type="text/javascript">
-    const search_btn = document.getElementById( "download-btn" );
-    const video_url = document.getElementById( "video-url" );
-    const formatSelect = document.querySelector( ".formte" );
-    const title = document.querySelector( ".video_title" );
-    const imgDiv = document.querySelector( ".video_img" );
-    const imgElement = imgDiv.querySelector( "img" );
-    const resolution = document.querySelector( "#resolution_section" );
-    const downloadSection = document.querySelector( "#download_section" );
-    const loader = document.querySelector( "#loading" );
-    const overlay = document.querySelector( "#overlay" );
-    var selectedValue = ""
-    function updateFormat ()
-    {
-      var formatSelect = document.getElementById( "format" );
-      selectedValue = formatSelect.value;
-    }
-    search_btn.addEventListener( "click", () =>
-    {
-      overlay.classList.add( 'show_ovelay' );
-      loader.classList.add( "display" );
-      document.body.style.overflow = "hidden";
-      console.log( selectedValue );
-      if ( selectedValue === "mp4" )
+    <script type="text/javascript">
+      const search_btn = document.getElementById( "download-btn" );
+      const video_url = document.getElementById( "video-url" );
+      const formatSelect = document.querySelector( ".formte" );
+      const title = document.querySelector( ".video_title" );
+      const imgDiv = document.querySelector( ".video_img" );
+      const imgElement = imgDiv.querySelector( "img" );
+      const resolution = document.querySelector( "#resolution_section" );
+      const downloadSection = document.querySelector( "#download_section" );
+      const loader = document.querySelector( "#loading" );
+      const overlay = document.querySelector( "#overlay" );
+      var selectedValue = "mp3"
+      function updateFormat ()
       {
-        url = "http://127.0.0.1:8000/ytb/";
-        const payload = {
-          video_url: video_url.value,
-        };
-        fetch( url, {
-          method: "POST",
-          body: JSON.stringify( payload ),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        } )
-          .then( ( response ) => response.json() )
-          .then( ( data ) =>
-          {
-            //console.log(data);
-            overlay.classList.remove( 'show_ovelay' );
-            document.body.style.overflow = "auto";
-            loader.classList.remove( "display" );
-            result_section.style.display = "block";
-            title.innerText = data.data.title;
-            imgElement.src = data.data.thumbnail;
-            let format = data.data.video_formats;
-            let unique = [];
-            console.log( format );
-            format.map( ( item ) =>
-            {
-              if ( !unique.includes( item.url ) )
-              {
-                unique.push( item.url );
-                if ( item.url != null )
-                {
-                  resolution.innerHTML += `<p>${ item.height } X ${ item.width }</p>`;
-                  downloadSection.innerHTML += `<a href="${ item.url }&title=${ data.data.title }" class="download_btn">Download</a>`;
-                }
-              }
-            } );
-          } )
-          .catch( ( error ) =>
-          {
-            console.error( "An error occurred:", error );
-          } );
+        var formatSelect = document.getElementById( "format" );
+        selectedValue = formatSelect.value;
       }
-    } );
-
+      search_btn.addEventListener( "click", () =>
+      {
+        overlay.classList.add( 'show_ovelay' );
+        loader.classList.add( "display" );
+        console.log( selectedValue );
+        if (selectedValue !="")
+        {
+          url = "http://127.0.0.1:8000/ytb/";
+          const payload = {
+            video_url: video_url.value,
+            format: selectedValue
+          };
+          fetch( url, {
+            method: "POST",
+            body: JSON.stringify( payload ),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          } )
+            .then( ( response ) => response.json() )
+            .then( ( data ) =>
+            {
+              //console.log(data);
+              overlay.classList.remove( 'show_ovelay' );
+              loader.classList.remove( "display" );
+              result_section.style.display = "block";
+              title.innerText = data.info.title;
+              imgElement.src = data.info.image;
+              
+              resolution.innerHTML = `<p>${ data.format }</p>`;
+              downloadSection.innerHTML = `<a href="${ data.download_url }" class="download_btn">Download</a>`;
+              } )
+            .catch( ( error ) =>
+            {
+              console.error( "An error occurred:", error );
+              result_section.style.display = "block";
+              result_section.innerHTML = `<p>Sorry!, Can't download video at the very moment, Please check your internet connection. Or be sure that your Url is correct !</p>`
+              loader.classList.remove( "display" );
+              overlay.classList.remove( 'show_ovelay' );
+            } );
+        }
+  
+      })
   </script>
 
   {% endblock script %}
