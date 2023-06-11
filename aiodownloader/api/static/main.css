@@ -17,14 +17,16 @@ body {
 
   background-color: #f7f7f7;
 }
-
+.main_title {
+  text-align: center;
+  padding: 1rem 0;
+}
 header {
   display: flex;
   align-items: center;
-  background-color: #333;
   color: #fff;
   padding: 20px;
-  padding-top: 25px;
+  padding-top: 10px;
 }
 .ham_menu {
   cursor: pointer;
@@ -413,7 +415,7 @@ label {
 /* .tiktok-img:hover,
 .insta-img:hover {
   /* border: 4px solid #1f9d86; */
- /* } */
+/* } */
 
 .tiktok-img:hover svg,
 .insta-img:hover svg {
@@ -479,9 +481,6 @@ footer {
 footer p {
   margin: 0;
 }
-
-
-
 
 @media (max-width: 1024px) {
   .logo {
