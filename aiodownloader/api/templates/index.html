@@ -7,34 +7,39 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static 'main.css' %}">
-  <title>Video | Downloader</title>
+  <title>Mp3VideosConverter</title>
 
 </head>
 
 <body>
   <div class="container">
-    <header>
-      <div class="logo">
-        <img src="{% static '/images/logo.png' %}" alt="Video Downloader Logo">
-      </div>
-      <nav class="nav">
-        <ul>
-          {% block link %}
-          <li><a href="/" class="active nav_link">YouTube Downloader</a></li>
-          <li><a href="/tik-tok" class="nav_link" onclick="changeActiveLink(event, '/tik-tok')">TikTok Downloader</a>
-          </li>
-          <li><a href="/instagram" class="nav_link" onclick="changeActiveLink(event, '/instagram')">Instagram
-              Downloader</a></li>
-          {% endblock link %}
+    <div class="header_container">
+      <h1 class="main_title">Mp3VideosConverter</h1>
+      <header>
 
-        </ul>
-      </nav>
-      <div class="ham_menu">
-        <p class="line"></p>
-        <p class="line"></p>
-        <p class="line"></p>
-      </div>
-    </header>
+        <div class="logo">
+          <img src="{% static '/images/logo.png' %}" alt="Video Downloader Logo">
+        </div>
+        <nav class="nav">
+          <ul>
+            {% block link %}
+            <li><a href="/" class="active nav_link">YouTube Downloader</a></li>
+            <li><a href="/tik-tok" class="nav_link" onclick="changeActiveLink(event, '/tik-tok')">TikTok Downloader</a>
+            </li>
+            <li><a href="/instagram" class="nav_link" onclick="changeActiveLink(event, '/instagram')">Instagram
+                Downloader</a></li>
+            {% endblock link %}
+
+          </ul>
+        </nav>
+        <div class="ham_menu">
+          <p class="line"></p>
+          <p class="line"></p>
+          <p class="line"></p>
+        </div>
+      </header>
+    </div>
+
     <style>
       /* loading animation */
       #loading {
@@ -206,18 +211,18 @@
       <h3>Share to world</h3>
       <p>Let other enjoy this downloader.</p>
       <div class="share_links">
-        <svg class="share_link fb" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-          viewBox="0 0 50 50" width="50px" height="50px">
+        <svg onclick="shareOnFacebook()" class="share_link fb" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" width="50px" height="50px">
           <path style="fill:none;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;"
             d="M25,4C13.402,4,4,13.402,4,25c0,10.528,7.756,19.222,17.861,20.74V30.566h-5.196v-5.52h5.196v-3.673c0-6.081,2.963-8.751,8.017-8.751c2.421,0,3.701,0.179,4.307,0.261v4.818h-3.447c-2.145,0-2.895,2.034-2.895,4.327v3.017h6.289l-0.853,5.52h-5.435v15.22C38.093,44.395,46,35.631,46,25C46,13.402,36.598,4,25,4z" />
         </svg>
-        <svg class="share_link twitter" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-          viewBox="0 0 50 50" width="50px" height="50px">
+        <svg onclick="shareOnTwitter()" class="share_link twitter" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" width="50px" height="50px">
           <path fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
             d="M49,11.096c-1.768,0.784-3.664,1.311-5.658,1.552c2.035-1.22,3.597-3.151,4.332-5.448c-1.903,1.127-4.013,1.947-6.255,2.388c-1.795-1.916-4.354-3.11-7.186-3.11c-5.44,0-9.849,4.409-9.849,9.847c0,0.771,0.088,1.522,0.257,2.244c-8.184-0.412-15.441-4.332-20.299-10.29c-0.848,1.458-1.332,3.149-1.332,4.953c0,3.416,1.735,6.429,4.38,8.197c-1.616-0.051-3.132-0.495-4.46-1.233c0,0.042,0,0.082,0,0.125c0,4.773,3.394,8.748,7.896,9.657c-0.824,0.227-1.694,0.346-2.592,0.346c-0.636,0-1.253-0.062-1.856-0.178c1.257,3.909,4.892,6.761,9.201,6.84c-3.368,2.641-7.614,4.213-12.23,4.213c-0.797,0-1.579-0.044-2.348-0.137c4.356,2.795,9.534,4.425,15.095,4.425c18.114,0,28.022-15.007,28.022-28.016c0-0.429-0.011-0.856-0.029-1.275C46.012,14.807,47.681,13.071,49,11.096z" />
         </svg>
-        <svg class="share_link insta" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-          viewBox="0 0 50 50" width="50px" height="50px">
+        <svg onclick="shareOnInstagram()" class="share_link insta" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" width="50px" height="50px">
           <path style="fill:none;stroke-width:2;stroke-miterlimit:10;"
             d="M16,46h18c6.627,0,12-5.373,12-12V16c0-6.627-5.373-12-12-12H16C9.373,4,4,9.373,4,16v18C4,40.627,9.373,46,16,46z" />
           <circle style="fill:none;stroke-width:2;stroke-miterlimit:10;" cx="25" cy="25" r="10" />
@@ -250,6 +255,29 @@
       }
 
     } )
+    function shareOnFacebook ()
+    {
+
+      var url = encodeURIComponent( document.location.href );
+      var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+      window.open( shareUrl, "_blank" );
+    }
+
+    function shareOnTwitter ()
+    {
+
+      var url = encodeURIComponent( document.location.href );
+      var shareUrl = "https://twitter.com/intent/tweet?url=" + url;
+      window.open( shareUrl, "_blank" );
+    }
+
+    function shareOnInstagram ()
+    {
+
+      var instagramUrl = `https://www.instagram.com/`;
+      window.open( instagramUrl, "_blank" );
+    }
+
   </script>
 
   {% block script %}
