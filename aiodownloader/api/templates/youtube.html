@@ -28,7 +28,7 @@
   }
 
   #resolution_section>p {
-    border: 2px solid black;
+    border: 2px solid #7f7f7f;
     padding: 15.4px 20px;
     font-size: smaller;
   }
@@ -36,6 +36,7 @@
   #resolution_section {
     gap: 1rem;
   }
+
 
   .download_section>a {
     text-decoration: none;
@@ -83,57 +84,69 @@
   </div> {% endcomment %}
   {% endblock select %}
   {% block script %}
-    <script type="text/javascript">
-      const search_btn = document.getElementById( "download-btn" );
-      const video_url = document.getElementById( "video-url" );
-      {% comment %} const formatSelect = document.querySelector( ".formte" ); {% endcomment %}
-      const title = document.querySelector( ".video_title" );
-      const imgDiv = document.querySelector( ".video_img" );
-      const imgElement = imgDiv.querySelector( "img" );
-      const resolution = document.querySelector( "#resolution_section" );
-      const downloadSection = document.querySelector( "#download_section" );
-      const loader = document.querySelector( "#loading" );
-      const overlay = document.querySelector( "#overlay" );
-      var selectedValue = "mp3"
+  <script type="text/javascript">
+    const search_btn = document.getElementById( "download-btn" );
+    const video_url = document.getElementById( "video-url" );
+    {% comment %} const formatSelect = document.querySelector( ".formte" ); {% endcomment %}
+    const title = document.querySelector( ".video_title" );
+    const imgDiv = document.querySelector( ".video_img" );
+    const imgElement = imgDiv.querySelector( "img" );
+    const resolution = document.querySelector( "#resolution_section" );
+    const downloadSection = document.querySelector( "#download_section" );
+    const loader = document.querySelector( "#loading" );
+    const overlay = document.querySelector( "#overlay" );
+    var selectedValue = "mp3"
 
-      search_btn.addEventListener( "click", () =>
-      {
-        overlay.classList.add( 'show_ovelay' );
-        loader.classList.add( "display" );
+    search_btn.addEventListener( "click", () =>
+    {
+      overlay.classList.add( 'show_ovelay' );
+      document.body.style.overflow = "hidden";
+      loader.classList.add( "display" );
 
-          url = location.origin +  "/ytb/";
-          const payload = {
-            video_url: video_url.value,
-            format: selectedValue
-          };
-          fetch( url, {
-            method: "POST",
-            body: JSON.stringify( payload ),
-            headers: {
-              "Content-Type": "application/json",
-            },
+      url = location.origin + "/ytb/";
+      const payload = {
+        video_url: video_url.value,
+        format: selectedValue
+      };
+      fetch( url, {
+        method: "POST",
+        body: JSON.stringify( payload ),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      } )
+        .then( ( response ) => response.json() )
+        .then( ( data ) =>
+        {
+          console.log( data );
+          overlay.classList.remove( 'show_ovelay' );
+          loader.classList.remove( "display" );
+
+          result_section.style.display = "block";
+          document.body.style.overflow = "auto";
+          title.innerText = data.title;
+          imgElement.src = data.src;
+
+          resolution.innerHTML = `
+          <h3>Resolutions</h3>
+          <p>MP3 320kbps</p>
+          `
+          downloadSection.innerHTML = `
+          <h3>Downloads</h3>
+          <a href="${ data.mp3 }" class="download_btn">Download</a>
+          `
+          let format = data.data;
+          let unique = [];
+
+          format.map( ( item ) =>
+          {
+
+            resolution.innerHTML += `
+                  <p>${ item.Quality } ${ item.Fps }FPS</p>
+                  `;
+            downloadSection.innerHTML += `<a href="${ item.Downloadlink }" class="download_btn">Download</a>`;
+
           } )
-            .then( ( response ) => response.json() )
-            .then( ( data ) =>
-            {
-              console.log(data);
-              overlay.classList.remove( 'show_ovelay' );
-              loader.classList.remove( "display" );
-              result_section.style.display = "block";
-              title.innerText = data.title;
-              imgElement.src = data.src;
-    
-            resolution.innerHTML= `<p>MP3 320kbps</p>`
-            downloadSection.innerHTML=`<a href="${data.mp3}" class="download_btn">Download</a>`
-            let format = data.data;
-            let unique = [];
-
-            format.map((item) => {
-            
-                  resolution.innerHTML += `<p>${item.Quality} ${item.Fps}FPS</p>`;
-                  downloadSection.innerHTML += `<a href="${item.Downloadlink}" class="download_btn">Download</a>`;
-                
-              } )
         } )
         .catch( ( error ) =>
         {
