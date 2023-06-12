@@ -8,4 +8,4 @@ class InstagramSerializer(serializers.Serializer):
 
 class YoutubeSerializer(serializers.Serializer):
     video_url = serializers.URLField()
-    format = serializers.CharField(max_length=10)
+    # format = serializers.CharField(max_length=10)

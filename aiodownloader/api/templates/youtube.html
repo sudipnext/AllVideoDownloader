@@ -25,6 +25,15 @@
   .result_container {
     border-top: 2px solid rgb(186, 183, 183);
   }
+  #resolution_section > p{
+    border: 2px solid black;
+    padding: 15.4px 25px;
+    font-size: smaller;
+  }
+  #resolution_section{
+    gap: 1rem;
+  }
+
 </style>
 <div>
   <div class="result_container">
@@ -37,8 +46,7 @@
         <div class="download_resolution">
           <!-- resolution -->
           <div class="resolution_section" id="resolution_section">
-            <h3>Resolution</h3>
-            <p>720</p>
+        
           </div>
           <!-- download button -->
           <div class="download_section" id="download_section">
@@ -53,25 +61,25 @@
   {% endblock result %}
 
   {% block select %}
-  <div class="format-select">
+  {% comment %} <div class="format-select">
     <label for="video-format">Select Format:</label>
     <div class="select">
       <select name="format" class="formte" id="format" onchange="updateFormat()">
         <option value="mp3">Mp3</option>
-        <option value="mp4">Mp4</option>
-        <option value="360">Mp4 360</option>
+        <option value="mp4">Mp4</option> 
+         <option value="360">Mp4 360</option>
         <option value="480">Mp4 480</option>
         <option value="720">Mp4 720</option>
         <option value="1080">Mp4 1080</option>
       </select>
     </div>
-  </div>
+  </div> {% endcomment %}
   {% endblock select %}
   {% block script %}
     <script type="text/javascript">
       const search_btn = document.getElementById( "download-btn" );
       const video_url = document.getElementById( "video-url" );
-      const formatSelect = document.querySelector( ".formte" );
+      {% comment %} const formatSelect = document.querySelector( ".formte" ); {% endcomment %}
       const title = document.querySelector( ".video_title" );
       const imgDiv = document.querySelector( ".video_img" );
       const imgElement = imgDiv.querySelector( "img" );
@@ -80,18 +88,18 @@
       const loader = document.querySelector( "#loading" );
       const overlay = document.querySelector( "#overlay" );
       var selectedValue = "mp3"
-      function updateFormat ()
+      {% comment %} function updateFormat ()
       {
         var formatSelect = document.getElementById( "format" );
         selectedValue = formatSelect.value;
-      }
+      } {% endcomment %}
       search_btn.addEventListener( "click", () =>
       {
         overlay.classList.add( 'show_ovelay' );
         loader.classList.add( "display" );
-        console.log( selectedValue );
-        if (selectedValue !="")
-        {
+        //console.log( selectedValue );
+        /*if (selectedValue !="")
+        {*/
           url = location.origin +  "/ytb/";
           const payload = {
             video_url: video_url.value,
@@ -107,16 +115,36 @@
             .then( ( response ) => response.json() )
             .then( ( data ) =>
             {
-              //console.log(data);
+              console.log(data);
               overlay.classList.remove( 'show_ovelay' );
               loader.classList.remove( "display" );
               result_section.style.display = "block";
-              title.innerText = data.info.title;
-              imgElement.src = data.info.image;
-              
-              resolution.innerHTML = `<p>${ data.format }</p>`;
-              downloadSection.innerHTML = `<a href="${ data.download_url }" class="download_btn">Download</a>`;
+              title.innerText = data.title;
+              imgElement.src = data.thumbnails;
+              console.log(data.format[0].url)
+              console.log(data.format[0].height)
+              console.log(data.format[0].width)
+            //  formatSelect.innerHTML=`<option value="mp3">Mp3</option>`
+            //  qualityData = data.quality
+              //qualityData.map((item)=>{
+              //  formatSelect.innerHTML += `<option value="${item}">${item}</option>`
+
+              //})
+            resolution.innerHTML=""
+            downloadSection.innerHTML=""
+            let format = data.format;
+            let unique = [];
+            console.log(format);
+            format.map((item) => {
+              if (!unique.includes(item.url) && item.height !=null && item.ext !=null) {
+                unique.push(item.url);
+                if (item.url != null) {
+                  resolution.innerHTML += `<p>${item.height} X ${item.width} ${item.ext}</p>`;
+                  downloadSection.innerHTML += `<a href="${item.url}" class="download_btn">Download</a>`;
+                }
+              }
               } )
+            })
             .catch( ( error ) =>
             {
               console.error( "An error occurred:", error );
@@ -125,7 +153,8 @@
               loader.classList.remove( "display" );
               overlay.classList.remove( 'show_ovelay' );
             } );
-        }
+        
+      
   
       })
   </script>

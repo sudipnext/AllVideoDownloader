@@ -35,10 +35,9 @@
 
 <div class="result_container">
   <div id="result_section" class="result_section">
-    <h1 class="video_title">Video title will be here.</h1>
+    <h1 class="video_title">Download Your Favourite Instagram video with just one click</h1>
     <div class="video_content">
       <div class="video_img">
-        <img src="" alt="" />
       </div>
       <div class="download_resolution">
         <!-- resolution -->
@@ -47,7 +46,7 @@
           <p>720</p>
         </div>
         <!-- download button -->
-        <div class="download_section">
+        <div class="download_section" id="download_section">
           <h3>Download</h3>
           <button onclick="downloadVideo()" class="download_btn">Download</button>
         </div>
@@ -66,6 +65,9 @@
     const imgElement = imgDiv.querySelector( "img" );
     const loader = document.querySelector( "#loading" );
     const overlay = document.querySelector( "#overlay" );
+    const downloadSection = document.querySelector("#download_section");
+
+
 
     search_btn.addEventListener( "click", () =>
     {
@@ -86,12 +88,15 @@
         .then( ( response ) => response.json() )
         .then( ( data ) =>
         {
+
           overlay.classList.remove( 'show_ovelay' );
           document.body.style.overflow = "auto";
           loader.classList.remove( "display" );
           result_section.style.display = "block";
-          title.innerText = data.description;
-          download_url = data.download_url;
+            console.log(data)
+            download_url = data.download_url;
+            downloadSection.innerHTML = `<a href="${download_url}" class="download_btn">Download</a>`;
+            imgDiv.innerHTML = `<video width="100%"><source src="${download_url}" type="video/mp4"></video>`       
         } )
         .catch( ( error ) =>
         {

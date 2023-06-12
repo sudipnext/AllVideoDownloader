@@ -10,8 +10,9 @@ import time
 import os
 from django.http import FileResponse
 from django.conf import settings
-
 from django.urls import resolve
+from mechanicalsoup import StatefulBrowser
+
 
 
 #Static file views
@@ -44,39 +45,21 @@ class TiktokDownload(APIView):
         return Response(serializer.errors, status=400)
 
 
-# youtube 
 class YoutubeDownload(APIView):
     def post(self, request):
         serializer = YoutubeSerializer(data=request.data)
         if serializer.is_valid():
             video_url = serializer.validated_data['video_url']
-            format = serializer.validated_data['format']
-            first_api_url = f"https://loader.to/ajax/download.php?format={format}&url={video_url}"
-            first_api_response = requests.get(first_api_url).json()
-            info = first_api_response.get("info")
-            if first_api_response.get('success'):
-                content_id = first_api_response.get('id')
-                download_url = None
-                while download_url is None:
-                    second_api_url = f"https://loader.to/ajax/progress.php?id={content_id}"
-                    second_api_response = requests.get(second_api_url).json()
-
-                    if second_api_response.get('download_url'):
-                        download_url = second_api_response.get('download_url')
-                    elif second_api_response.get('text') != 'Finished':
-                        time.sleep(1)
-                response_data = {
-                    'success': 1,
-                    'download_url': download_url,
-                    'info': info, 
-                    'format': format
-                }
+            try:
+                response = requests.get(f'https://api.youtubemultidownloader.com/video?url={video_url}')
+                response_data = response.json()
                 return Response(response_data)
-            response_data = {
-                'success': 0,
-                'message': 'Error retrieving download URL'
-            }
-            return Response(response_data)
+            except requests.exceptions.RequestException as e:
+                return Response({'error': 'Request error occurred'})
+            except ValueError as e:
+                return Response({'error': 'Error parsing JSON response'})
+        else:
+            return Response(serializer.errors)
 
 
 class InstaDownload(APIView):
@@ -84,37 +67,20 @@ class InstaDownload(APIView):
         serializer = InstagramSerializer(data=request.data)
         if serializer.is_valid():
             video_url = serializer.validated_data['video_url']
-            res = download_insta(video_url, request)
-            return Response(res, 200)
-        
-#downloads the file
-def download_insta(url, request):
-    L = instaloader.Instaloader()
-    shortcode = re.findall(r'/([A-Za-z0-9_-]+?)/?$', url)[0]
-    post = instaloader.Post.from_shortcode(L.context, shortcode)
-    target = 'downloads'
-    L.download_post(post, target=target)
-    description = post.caption.strip()
-    filenames = []
-    for filename in os.listdir(target):
-        if filename.startswith(post.date_utc.strftime('%Y-%m-%d')):
-            filenames.append(filename)
-    # Rename the files to the shortcode
-    for filename in filenames:
-        old_path = os.path.join(target, filename)
-        new_filename = f"{shortcode}{os.path.splitext(filename)[1]}"
-        new_path = os.path.join(target, new_filename)
-        os.rename(old_path, new_path)
-    download_url = f"http://{request.META['HTTP_HOST']}/media/videos/{shortcode}/"
-    return {"description":description, "download_url": download_url}
+            browser = StatefulBrowser()
+            url = "https://downloadgram.org/"  # Replace with your actual URL
+            browser.open(url)
+            browser.select_form()
+            url_input_name = "url"  # Replace with the actual name of the input field
+            url_value = video_url  # Replace with the desired URL
+            browser[url_input_name] = url_value
+            browser.submit_selected()
+            response = browser.get_current_page()
+            video_element = response.find("video", class_="control-video")
 
+            if video_element:
+                video_url = video_element.source["src"]
+                return Response({"download_url":video_url})
+            else:
+                print("Video element not found on the page.")
 
-def serve_video(request, video_code):
-    video_filename = f"{video_code}.mp4"
-    video_path = os.path.join(settings.BASE_DIR, 'downloads', video_filename)
-    if os.path.exists(video_path):
-        response = FileResponse(open(video_path, 'rb'), content_type='video/mp4')
-        response['Content-Disposition'] = f'attachment; filename="{video_filename}"'
-        return response
-    else:
-        return HttpResponseNotFound("File not found")
