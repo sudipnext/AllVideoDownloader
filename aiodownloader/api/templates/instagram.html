@@ -65,7 +65,7 @@
     const imgElement = imgDiv.querySelector( "img" );
     const loader = document.querySelector( "#loading" );
     const overlay = document.querySelector( "#overlay" );
-    const downloadSection = document.querySelector("#download_section");
+    const downloadSection = document.querySelector( "#download_section" );
 
 
 
@@ -93,10 +93,10 @@
           document.body.style.overflow = "auto";
           loader.classList.remove( "display" );
           result_section.style.display = "block";
-            console.log(data)
-            download_url = data.download_url;
-            downloadSection.innerHTML = `<a href="${download_url}" class="download_btn">Download</a>`;
-            imgDiv.innerHTML = `<video width="100%"><source src="${download_url}" type="video/mp4"></video>`       
+          console.log( data )
+          download_url = data.download_url;
+          // downloadSection.innerHTML = `<a href="${download_url}" class="download_btn">Download</a>`;
+          imgDiv.innerHTML = `<video width="100%"><source src="${ download_url }" type="video/mp4"></video>`
         } )
         .catch( ( error ) =>
         {
