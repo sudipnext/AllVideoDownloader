@@ -26,15 +26,21 @@
   .result_container {
     border-top: 2px solid rgb(186, 183, 183);
   }
-  #resolution_section > p{
+
+  #resolution_section>p {
     border: 2px solid black;
-    padding: 15.4px 25px;
+    padding: 15.4px 20px;
     font-size: smaller;
   }
-  #resolution_section{
+
+  #resolution_section {
     gap: 1rem;
   }
 
+  .download_section>a {
+    text-decoration: none;
+    color: inherit;
+  }
 </style>
 <div>
   <div class="result_container">
@@ -47,12 +53,12 @@
         <div class="download_resolution">
           <!-- resolution -->
           <div class="resolution_section" id="resolution_section">
-        
+
           </div>
           <!-- download button -->
           <div class="download_section" id="download_section">
-            <h3>Download</h3>
-            <button onclick="downloadVideo()" class="download_btn">Download</button>
+
+            <button onclick="downloadVideo()" class="download_btn">Downloads</button>
           </div>
         </div>
 
@@ -67,8 +73,8 @@
     <div class="select">
       <select name="format" class="formte" id="format" onchange="updateFormat()">
         <option value="mp3">Mp3</option>
-        <option value="mp4">Mp4</option> 
-         <option value="360">Mp4 360</option>
+        <option value="mp4">Mp4</option>
+        <option value="360">Mp4 360</option>
         <option value="480">Mp4 480</option>
         <option value="720">Mp4 720</option>
         <option value="1080">Mp4 1080</option>
@@ -89,18 +95,12 @@
       const loader = document.querySelector( "#loading" );
       const overlay = document.querySelector( "#overlay" );
       var selectedValue = "mp3"
-      {% comment %} function updateFormat ()
-      {
-        var formatSelect = document.getElementById( "format" );
-        selectedValue = formatSelect.value;
-      } {% endcomment %}
+
       search_btn.addEventListener( "click", () =>
       {
         overlay.classList.add( 'show_ovelay' );
         loader.classList.add( "display" );
-        //console.log( selectedValue );
-        /*if (selectedValue !="")
-        {*/
+
           url = location.origin +  "/ytb/";
           const payload = {
             video_url: video_url.value,
@@ -139,19 +139,19 @@
                   downloadSection.innerHTML += `<a href="${item.Downloadlink}" class="download_btn">Download</a>`;
                 
               } )
-            })
-            .catch( ( error ) =>
-            {
-              console.error( "An error occurred:", error );
-              result_section.style.display = "block";
-              result_section.innerHTML = `<p>Sorry!, Can't download video at the very moment, Please check your internet connection. Or be sure that your Url is correct !</p>`
-              loader.classList.remove( "display" );
-              overlay.classList.remove( 'show_ovelay' );
-            } );
-        
-      
-  
-      })
+        } )
+        .catch( ( error ) =>
+        {
+          console.error( "An error occurred:", error );
+          result_section.style.display = "block";
+          result_section.innerHTML = `<p>Sorry!, Can't download video at the very moment, Please check your internet connection. Or be sure that your Url is correct !</p>`
+          loader.classList.remove( "display" );
+          overlay.classList.remove( 'show_ovelay' );
+        } );
+
+
+
+    } )
   </script>
 
   {% endblock script %}
