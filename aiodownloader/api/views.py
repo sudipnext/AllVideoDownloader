@@ -38,23 +38,6 @@ class TiktokDownload(APIView):
             return Response(response)
         return Response(serializer.errors, status=400)
 
-#youtube
-# class YoutubeDownload(APIView):
-#     def post(self, request):
-#         serializer = YoutubeSerializer(data=request.data)
-#         if serializer.is_valid():
-#             video_url = serializer.validated_data['video_url']
-#             try:
-#                 response = requests.get(f'https://api.youtubemultidownloader.com/video?url={video_url}')
-#                 response_data = response.json()
-#                 return Response(response_data)
-#             except requests.exceptions.RequestException as e:
-#                 return Response({'error': 'Request error occurred'})
-#             except ValueError as e:
-#                 return Response({'error': 'Error parsing JSON response'})
-#         else:
-#             return Response(serializer.errors)
-
 
 
 
@@ -97,18 +80,36 @@ class YoutubeDownload(APIView):
                         }
                         data.append(row_data)
                 
-                # Create a dictionary with scraped data, the image src, and the title
                 response_data = {
                     'src': src,
                     'title': title,
-                    'data': data
-                }
+                    'data': data,
+                    'mp3': mp3Download()
+                }    
                 
                 return Response(response_data)
             else:
                 return Response({"error": "Failed to open the URL."})
         else:
             return Response(serializer.errors)
+
+def mp3Download():
+    browser = StatefulBrowser()
+    url = "https://getn.topsandtees.space/s/zPrGJZxVON"
+    browser.open(url)
+    form = browser.select_form('#search_form')
+    form.set("q", "https://youtu.be/PJWemSzExXs")
+    browser.submit_selected()
+    page_content = browser.page
+    download_link = page_content.find('a', class_='search-item__download')
+    url = download_link['data-url']
+    url = f"https://getn.topsandtees.space{url}/mp3"
+    browser.open(url)
+    updated_page_content = browser.page
+    span = updated_page_content.find('span', class_='search-item__download')
+    data_href = span['data-href']
+    return data_href
+
 #instagram
 class InstaDownload(APIView):
     def post(self, request):

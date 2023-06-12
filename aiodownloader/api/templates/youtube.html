@@ -122,17 +122,12 @@
               result_section.style.display = "block";
               title.innerText = data.title;
               imgElement.src = data.src;
-      
-            //  formatSelect.innerHTML=`<option value="mp3">Mp3</option>`
-            //  qualityData = data.quality
-              //qualityData.map((item)=>{
-              //  formatSelect.innerHTML += `<option value="${item}">${item}</option>`
-
-              //})
-            resolution.innerHTML=""
-            downloadSection.innerHTML=""
+    
+            resolution.innerHTML= `<p>MP3 320kbps</p>`
+            downloadSection.innerHTML=`<a href="${data.mp3}" class="download_btn">Download</a>`
             let format = data.data;
             let unique = [];
+
             format.map((item) => {
             
                   resolution.innerHTML += `<p>${item.Quality} ${item.Fps}FPS</p>`;
