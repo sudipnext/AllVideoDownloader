@@ -121,10 +121,8 @@
               loader.classList.remove( "display" );
               result_section.style.display = "block";
               title.innerText = data.title;
-              imgElement.src = data.thumbnails;
-              console.log(data.format[0].url)
-              console.log(data.format[0].height)
-              console.log(data.format[0].width)
+              imgElement.src = data.src;
+      
             //  formatSelect.innerHTML=`<option value="mp3">Mp3</option>`
             //  qualityData = data.quality
               //qualityData.map((item)=>{
@@ -133,17 +131,13 @@
               //})
             resolution.innerHTML=""
             downloadSection.innerHTML=""
-            let format = data.format;
+            let format = data.data;
             let unique = [];
-            console.log(format);
             format.map((item) => {
-              if (!unique.includes(item.url) && item.height !=null && item.ext !=null) {
-                unique.push(item.url);
-                if (item.url != null) {
-                  resolution.innerHTML += `<p>${item.height} X ${item.width} ${item.ext}</p>`;
-                  downloadSection.innerHTML += `<a href="${item.url}" class="download_btn">Download</a>`;
-                }
-              }
+            
+                  resolution.innerHTML += `<p>${item.Quality} ${item.Fps}FPS</p>`;
+                  downloadSection.innerHTML += `<a href="${item.Downloadlink}" class="download_btn">Download</a>`;
+                
               } )
             })
             .catch( ( error ) =>

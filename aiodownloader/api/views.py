@@ -1,17 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import HttpResponse,HttpResponseNotFound
+from django.http import HttpResponse
 from .serializers import *
 from django.template import loader
 import requests
-import instaloader
-import re
-import time
-import os
-from django.http import FileResponse
-from django.conf import settings
-from django.urls import resolve
 from mechanicalsoup import StatefulBrowser
+from bs4 import BeautifulSoup
 
 
 
@@ -44,39 +38,97 @@ class TiktokDownload(APIView):
             return Response(response)
         return Response(serializer.errors, status=400)
 
+#youtube
+# class YoutubeDownload(APIView):
+#     def post(self, request):
+#         serializer = YoutubeSerializer(data=request.data)
+#         if serializer.is_valid():
+#             video_url = serializer.validated_data['video_url']
+#             try:
+#                 response = requests.get(f'https://api.youtubemultidownloader.com/video?url={video_url}')
+#                 response_data = response.json()
+#                 return Response(response_data)
+#             except requests.exceptions.RequestException as e:
+#                 return Response({'error': 'Request error occurred'})
+#             except ValueError as e:
+#                 return Response({'error': 'Error parsing JSON response'})
+#         else:
+#             return Response(serializer.errors)
+
+
+
 
 class YoutubeDownload(APIView):
     def post(self, request):
         serializer = YoutubeSerializer(data=request.data)
         if serializer.is_valid():
             video_url = serializer.validated_data['video_url']
-            try:
-                response = requests.get(f'https://api.youtubemultidownloader.com/video?url={video_url}')
-                response_data = response.json()
+            browser = StatefulBrowser()
+            url = "https://vidiget.com/youtube-downloader-zp31r"
+            response = browser.open(url)
+            if response.ok:
+                form = browser.select_form('.downloadform')
+                form.set("youtube_video_page", video_url)  # Use the provided video_url
+                response = browser.submit_selected()
+                page_content = response.text
+                soup = BeautifulSoup(page_content, 'html.parser')
+                img_element = soup.find('img', {'class': 'img-thumbnail'})
+                src = img_element['src']
+                title = img_element['title']  # Extract the title attribute
+                rows = soup.select('.table.files-table tbody tr')
+                data = []
+                for row in rows:
+                    quality = row.select_one('td:nth-child(1)').text
+                    file_type = row.select_one('td:nth-child(2)').text
+                    fps_element = row.select_one('td.d-none.d-sm-table-cell:nth-child(3)')
+                    fps = fps_element.text if fps_element else None
+                    file_size_element = row.select_one('td.d-none.d-sm-table-cell:nth-child(4)')
+                    file_size = file_size_element.text if file_size_element else None
+                    download_link = row.select_one('td a')['href']
+                    
+                    # Exclude objects with "Download link" value of "javascript:void(0)"
+                    if download_link != "javascript:void(0)":
+                        row_data = {
+                            'Quality': quality,
+                            'Type': file_type,
+                            'Fps': fps,
+                            'File size': file_size,
+                            'Downloadlink': download_link
+                        }
+                        data.append(row_data)
+                
+                # Create a dictionary with scraped data, the image src, and the title
+                response_data = {
+                    'src': src,
+                    'title': title,
+                    'data': data
+                }
+                
                 return Response(response_data)
-            except requests.exceptions.RequestException as e:
-                return Response({'error': 'Request error occurred'})
-            except ValueError as e:
-                return Response({'error': 'Error parsing JSON response'})
+            else:
+                return Response({"error": "Failed to open the URL."})
         else:
             return Response(serializer.errors)
-
-
+#instagram
 class InstaDownload(APIView):
     def post(self, request):
         serializer = InstagramSerializer(data=request.data)
         if serializer.is_valid():
             video_url = serializer.validated_data['video_url']
             browser = StatefulBrowser()
-            url = "https://downloadgram.org/"  # Replace with your actual URL
+            url = "https://downloadgram.org/"  
             browser.open(url)
             browser.select_form()
-            url_input_name = "url"  # Replace with the actual name of the input field
-            url_value = video_url  # Replace with the desired URL
+            url_input_name = "url"  
+            url_value = video_url  
             browser[url_input_name] = url_value
             browser.submit_selected()
             response = browser.get_current_page()
             video_element = response.find("video", class_="control-video")
+            if response.ok:
+                form = browser.select_form('.downloadform')
+                form.set("youtube_video_page", "https://youtu.be/Qw3wbnzzyD4")
+
 
             if video_element:
                 video_url = video_element.source["src"]
