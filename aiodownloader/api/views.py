@@ -84,7 +84,7 @@ class YoutubeDownload(APIView):
                     'src': src,
                     'title': title,
                     'data': data,
-                    'mp3': mp3Download()
+                    'mp3': mp3Download(video_url)
                 }    
                 
                 return Response(response_data)
@@ -93,12 +93,12 @@ class YoutubeDownload(APIView):
         else:
             return Response(serializer.errors)
 
-def mp3Download():
+def mp3Download(video_url):
     browser = StatefulBrowser()
     url = "https://getn.topsandtees.space/s/zPrGJZxVON"
     browser.open(url)
     form = browser.select_form('#search_form')
-    form.set("q", "https://youtu.be/PJWemSzExXs")
+    form.set("q", video_url)
     browser.submit_selected()
     page_content = browser.page
     download_link = page_content.find('a', class_='search-item__download')
